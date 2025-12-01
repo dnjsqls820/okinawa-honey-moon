@@ -8,9 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Font Awesome (for icons instead of SVG) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Marked.js for Markdown rendering -->
+    <!-- Marked.js -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
@@ -18,8 +18,8 @@
         
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #F0F9FF; /* Light Ocean Blue */
-            color: #334155; /* Slate 700 */
+            background-color: #F0F9FF;
+            color: #334155;
         }
 
         .chart-container {
@@ -32,52 +32,24 @@
             max-height: 300px;
         }
 
-        /* Custom Scrollbar for horizontal tabs */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
-        .active-tab {
-            background-color: #0EA5E9; /* Sky 500 */
-            color: white;
-            border-color: #0EA5E9;
-        }
+        .active-tab { background-color: #0EA5E9; color: white; border-color: #0EA5E9; }
         
         .timeline-line {
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #CBD5E1;
-            z-index: 0;
+            position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background-color: #CBD5E1; z-index: 0;
         }
 
-        /* AI Chat Modal Animations */
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .animate-slide-up {
-            animation: slideUp 0.3s ease-out forwards;
-        }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
 
-        /* Markdown Styles in Chat */
         .prose p { margin-bottom: 0.5em; }
         .prose ul { list-style-type: disc; padding-left: 1.2em; margin-bottom: 0.5em; }
-        .prose strong { color: #0369a1; } /* Sky 700 */
+        .prose strong { color: #0369a1; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative">
@@ -100,45 +72,36 @@
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-8 space-y-12 pb-24">
 
-        <!-- Section 1: Trip Overview & Stats -->
+        <!-- Section 1: Overview -->
         <section id="overview" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">여행 개요</h2>
-                <p class="text-slate-600">
-                    오키나와의 북부 자연, 중부 액티비티, 남부 시티 라이프를 모두 즐기는 7박 8일 허니문입니다.
-                    이 섹션에서는 전체적인 일정 배분과 날씨, 이동 경로의 균형을 한눈에 확인할 수 있습니다.
-                </p>
+                <p class="text-slate-600">오키나와 북부, 중부, 남부를 아우르는 7박 8일 허니문.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Chart -->
                 <div class="bg-slate-50 rounded-xl p-4">
                     <h3 class="text-center font-semibold text-slate-700 mb-4">숙박 및 지역 배분</h3>
                     <div class="chart-container">
                         <canvas id="tripChart"></canvas>
                     </div>
                 </div>
-
-                <!-- Summary Cards -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-sky-50 p-4 rounded-xl text-center">
                         <i class="fa-solid fa-car text-sky-500 text-2xl mb-2"></i>
                         <h4 class="font-bold text-slate-700">렌터카</h4>
                         <p class="text-xs text-slate-500">마리오 렌터카</p>
-                        <p class="text-xs text-slate-500 mt-1">이동: 고속도로(북) → 국도58(남)</p>
                     </div>
                     <div class="bg-orange-50 p-4 rounded-xl text-center">
                         <i class="fa-solid fa-sun text-orange-400 text-2xl mb-2"></i>
                         <h4 class="font-bold text-slate-700">12월 날씨</h4>
-                        <p class="text-xs text-slate-500">평균 20°C</p>
-                        <p class="text-xs text-slate-500 mt-1">선선함, 얇은 긴팔 필수</p>
+                        <p class="text-xs text-slate-500">평균 20°C (선선함)</p>
                     </div>
                     <div class="bg-emerald-50 p-4 rounded-xl text-center col-span-2">
                         <i class="fa-solid fa-heart text-emerald-500 text-2xl mb-2"></i>
-                        <h4 class="font-bold text-slate-700">컨셉 밸런스</h4>
+                        <h4 class="font-bold text-slate-700">컨셉</h4>
                         <div class="flex justify-between text-xs mt-2 px-4">
                             <span>휴양 (북부/중부)</span>
-                            <span>도시/쇼핑 (남부)</span>
+                            <span>도시 (남부)</span>
                         </div>
                         <div class="w-full bg-emerald-200 rounded-full h-2.5 mt-1">
                             <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 70%"></div>
@@ -148,78 +111,49 @@
             </div>
         </section>
 
-        <!-- Section 2: Interactive Itinerary -->
+        <!-- Section 2: Itinerary -->
         <section id="itinerary" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">일별 상세 일정</h2>
-                <p class="text-slate-600">
-                    북부(3박)에서 시작하여 중부(2박), 남부(2박)로 내려오는 효율적인 동선입니다.
-                    탭을 클릭하여 날짜별 상세 동선과 맵코드를 확인하세요.
-                </p>
+                <p class="text-slate-600">탭을 클릭하여 날짜별 동선을 확인하세요.</p>
             </div>
-
-            <!-- Date Navigation -->
-            <div class="flex overflow-x-auto space-x-2 pb-4 scrollbar-hide mb-6" id="date-tabs">
-                <!-- Tabs will be injected by JS -->
-            </div>
-
-            <!-- Daily Content -->
-            <div id="day-content" class="min-h-[400px]">
-                <!-- Dynamic Content goes here -->
-            </div>
+            <div class="flex overflow-x-auto space-x-2 pb-4 scrollbar-hide mb-6" id="date-tabs"></div>
+            <div id="day-content" class="min-h-[400px]"></div>
         </section>
 
-        <!-- Section 3: Food & Cafe Map -->
+        <!-- Section 3: Food -->
         <section id="food" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">맛집 & 카페 탐방</h2>
-                <p class="text-slate-600">
-                    작성해주신 리스트를 기반으로 지역별 추천 맛집을 정리했습니다. 
-                    카드를 클릭하면 복사하기 쉬운 맵코드가 표시됩니다.
-                </p>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">맛집 & 카페</h2>
+                <p class="text-slate-600">카드를 클릭하면 맵코드가 복사됩니다.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- North Food -->
                 <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-emerald-600 border-b-2 border-emerald-100 pb-2">
-                        <i class="fa-solid fa-tree mr-2"></i>북부 (자연/힐링)
-                    </h3>
-                    <div id="food-north-list" class="space-y-3">
-                        <!-- JS Injected -->
-                    </div>
+                    <h3 class="font-bold text-lg text-emerald-600 border-b-2 border-emerald-100 pb-2"><i class="fa-solid fa-tree mr-2"></i>북부</h3>
+                    <div id="food-north-list" class="space-y-3"></div>
                 </div>
-                <!-- Central Food -->
                 <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-sky-600 border-b-2 border-sky-100 pb-2">
-                        <i class="fa-solid fa-water mr-2"></i>중부 (핫플/카페)
-                    </h3>
-                    <div id="food-central-list" class="space-y-3">
-                        <!-- JS Injected -->
-                    </div>
+                    <h3 class="font-bold text-lg text-sky-600 border-b-2 border-sky-100 pb-2"><i class="fa-solid fa-water mr-2"></i>중부</h3>
+                    <div id="food-central-list" class="space-y-3"></div>
                 </div>
-                <!-- South Food -->
                 <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-indigo-600 border-b-2 border-indigo-100 pb-2">
-                        <i class="fa-solid fa-city mr-2"></i>남부 (시내/이자카야)
-                    </h3>
-                    <div id="food-south-list" class="space-y-3">
-                        <!-- JS Injected -->
-                    </div>
+                    <h3 class="font-bold text-lg text-indigo-600 border-b-2 border-indigo-100 pb-2"><i class="fa-solid fa-city mr-2"></i>남부</h3>
+                    <div id="food-south-list" class="space-y-3"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 4: Map Code Quick Search -->
-        <section class="bg-slate-800 text-white rounded-2xl shadow-lg p-8">
-            <h2 class="text-xl font-bold mb-4"><i class="fa-solid fa-magnifying-glass mr-2"></i>주요 명소 맵코드 빠른 검색</h2>
-            <p class="text-slate-300 mb-4 text-sm">렌터카 네비게이션에 입력할 번호를 빠르게 찾으세요.</p>
-            <input type="text" id="mapcode-search" placeholder="장소명 검색 (예: 츄라우미, 만자모)" 
-                class="w-full p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <div id="search-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                <!-- Results -->
-            </div>
+        <!-- Section 4: Map Code Search -->
+        <section class="bg-slate-800 text-white rounded-2xl shadow-lg p-8 mb-8">
+            <h2 class="text-xl font-bold mb-4"><i class="fa-solid fa-magnifying-glass mr-2"></i>맵코드 검색</h2>
+            <input type="text" id="mapcode-search" placeholder="장소명 (예: 츄라우미)" class="w-full p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <div id="search-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div>
         </section>
+        
+        <!-- Settings Button (For Resetting API Key) -->
+        <div class="text-center pb-8">
+             <button onclick="resetApiKey()" class="text-xs text-slate-400 underline hover:text-slate-600">AI 키 재설정하기</button>
+        </div>
 
     </main>
 
@@ -233,288 +167,134 @@
 
     <!-- AI Chat Modal -->
     <div id="ai-chat-modal" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden h-[500px]">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-4 text-white flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-robot"></i>
-                <h3 class="font-bold">AI 여행 컨시어지</h3>
-            </div>
-            <button onclick="toggleAIChat()" class="text-white hover:text-slate-200">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-robot"></i><h3 class="font-bold">AI 여행 컨시어지</h3></div>
+            <button onclick="toggleAIChat()" class="text-white hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
-        <!-- Chat Area -->
         <div id="chat-messages" class="flex-grow p-4 overflow-y-auto bg-slate-50 space-y-4 text-sm">
-            <!-- Intro Message -->
             <div class="flex items-start gap-2">
                 <div class="bg-violet-100 p-2 rounded-full"><i class="fa-solid fa-robot text-violet-600"></i></div>
                 <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 max-w-[85%] text-slate-700">
-                    안녕하세요! ✨<br>
-                    오키나와 신혼여행 중 도움이 필요하신가요?<br><br>
-                    궁금한 점을 물어보거나 아래 버튼을 눌러보세요!
+                    안녕하세요! 무엇을 도와드릴까요?<br>맛집 추천, 일본어 번역 등을 물어보세요!
                 </div>
             </div>
         </div>
-
-        <!-- Quick Actions -->
         <div class="px-4 py-2 bg-white border-t border-slate-100 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
-            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">✨ 맛집 추천해줘</button>
-            <button onclick="sendQuickPrompt('translate')" class="px-3 py-1 bg-fuchsia-50 text-fuchsia-600 text-xs rounded-full border border-fuchsia-100 hover:bg-fuchsia-100">🗣️ 일본어로 번역</button>
-            <button onclick="sendQuickPrompt('weather')" class="px-3 py-1 bg-sky-50 text-sky-600 text-xs rounded-full border border-sky-100 hover:bg-sky-100">☔️ 비 올 때 추천</button>
+            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">✨ 맛집 추천</button>
+            <button onclick="sendQuickPrompt('translate')" class="px-3 py-1 bg-fuchsia-50 text-fuchsia-600 text-xs rounded-full border border-fuchsia-100 hover:bg-fuchsia-100">🗣️ 일본어 번역</button>
         </div>
-
-        <!-- Input Area -->
         <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
-            <input type="text" id="ai-input" placeholder="무엇이든 물어보세요..." class="flex-grow bg-slate-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-violet-300 outline-none" onkeypress="handleEnter(event)">
-            <button onclick="sendMessage()" class="bg-violet-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-violet-600 transition-colors">
-                <i class="fa-solid fa-paper-plane text-sm"></i>
-            </button>
+            <input type="text" id="ai-input" placeholder="메시지 입력..." class="flex-grow bg-slate-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-violet-300 outline-none" onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()" class="bg-violet-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-violet-600 transition-colors"><i class="fa-solid fa-paper-plane text-sm"></i></button>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
-        <div class="container mx-auto px-4 text-center text-slate-500 text-sm">
-            <p class="font-bold text-slate-700 mb-2">Happy Honeymoon</p>
-            <p>안전 운전하세요 (일본은 좌측 통행입니다)</p>
-            <p class="mt-2">© 2025 Okinawa Trip Planner with ✨ Gemini</p>
-        </div>
-    </footer>
-
     <script>
-        // --- DATA STORAGE ---
-
-        // 1. Itinerary Data (Core Logic)
+        // --- DATA ---
         const itinerary = [
-            {
-                date: "12/2 (화)",
-                day: 1,
-                title: "오키나와 도착 & 북부 이동",
-                region: "North",
-                stay: "북부 리조트 (1박)",
-                schedule: [
-                    { time: "12:00", activity: "나하 공항 도착", note: "입국 수속 및 짐 찾기" },
-                    { time: "13:30", activity: "렌터카 픽업 (마리오 렌터카)", note: "공항 픽업 버스 탑승 -> 지점 이동", mapCode: "33 095 244*60 (지점 확인 필요)" },
-                    { time: "14:30", activity: "고속도로 이동 (나하 IC -> 쿄다 IC)", note: "약 1시간 30분 소요. 휴게소 들르기" },
-                    { time: "17:00", activity: "북부 숙소 체크인 및 휴식", note: "장거리 비행/운전 피로 풀기" },
-                    { time: "18:30", activity: "저녁 식사 (숙소 근처 or 야키니쿠)", note: "북부 맛집: 캡틴 캥거루(버거) 또는 백년고가 우후야" }
-                ]
-            },
-            {
-                date: "12/3 (수)",
-                day: 2,
-                title: "츄라우미와 비세후쿠길",
-                region: "North",
-                stay: "북부 리조트 (2박)",
-                schedule: [
-                    { time: "10:00", activity: "츄라우미 수족관", note: "오키짱 쇼(돌고래) 시간 확인 필수. 고래상어 보기", mapCode: "553 075 797*77" },
-                    { time: "13:00", activity: "점심: 삿짱소바", note: "수족관 근처 현지인 맛집", mapCode: "553 046 397*55" },
-                    { time: "14:30", activity: "비세후쿠길 산책", note: "자전거 렌트 추천. 조용한 가로수길", mapCode: "553 105 654*77" },
-                    { time: "16:30", activity: "북부 드라이브 및 일몰 감상", note: "세소코섬 대교 드라이브 추천" },
-                    { time: "19:00", activity: "저녁 식사 및 휴식", note: "편의점 털기 또는 리조트 디너" }
-                ]
-            },
-            {
-                date: "12/4 (목)",
-                day: 3,
-                title: "코우리 대교 드라이브 & 맥주",
-                region: "North",
-                stay: "북부 리조트 (3박)",
-                schedule: [
-                    { time: "10:30", activity: "코우리 대교 드라이브", note: "오키나와 최고의 드라이브 코스. 쉬림프 웨건 간식", mapCode: "485 662 041*33" },
-                    { time: "12:00", activity: "코우리 오션 타워", note: "전망대 관람 (선택 사항)", mapCode: "485 693 485*06" },
-                    { time: "14:00", activity: "오리온 해피파크 (맥주 공장)", note: "★운전자 음주 절대 금지 (논알콜 제공). 사전 예약 필수", mapCode: "206 598 867*44" },
-                    { time: "16:00", activity: "네오 파크 또는 파인애플 파크", note: "가볍게 산책하기 좋은 곳 (선택)", mapCode: "206 684 640*41" },
-                    { time: "18:30", activity: "저녁: 야가지섬 또는 나고 시내", note: "현지 이자카야 체험 (대리운전 필수)" }
-                ]
-            },
-            {
-                date: "12/5 (금)",
-                day: 4,
-                title: "북부에서 중부로 이동 (Route 58)",
-                region: "Central",
-                stay: "중부 호텔 (1박)",
-                schedule: [
-                    { time: "10:00", activity: "체크아웃 및 남하 시작", note: "58번 국도 타고 해안 드라이브" },
-                    { time: "11:30", activity: "만자모", note: "코끼리 바위 절경 감상 (짧은 코스)", mapCode: "206 312 039*17" },
-                    { time: "13:00", activity: "점심: 나카무라 소바 or 팬케이크", note: "만자모 근처 맛집" },
-                    { time: "15:00", activity: "중부 숙소 체크인", note: "아메리칸 빌리지 근처 추천" },
-                    { time: "17:30", activity: "아메리칸 빌리지 야경 & 쇼핑", note: "관람차는 없어졌지만 야경은 여전히 예쁨", mapCode: "33 526 450*63" },
-                    { time: "19:00", activity: "저녁: 구르메 스시 or 스테이크", note: "아메빌 내 맛집 많음" }
-                ]
-            },
-            {
-                date: "12/6 (토)",
-                day: 5,
-                title: "푸른동굴과 카페 투어",
-                region: "Central",
-                stay: "중부 호텔 (2박)",
-                schedule: [
-                    { time: "09:00", activity: "푸른동굴 스노클링/다이빙", note: "마에다 곶. 사전 예약 필수. 물놀이", mapCode: "206 062 685*85" },
-                    { time: "12:30", activity: "점심: 산스시 (교토식)", note: "깔끔한 일식 정식", mapCode: "33 466 690*71" },
-                    { time: "14:30", activity: "반타 카페 (호시노 리조트)", note: "바다 뷰가 압도적인 대형 카페", mapCode: "33 882 485*82" },
-                    { time: "16:30", activity: "해중도로 드라이브", note: "바다를 가르는 긴 다리. 여유로운 드라이브", mapCode: "499 576 274*33" },
-                    { time: "19:00", activity: "저녁: 이시구후 (소바) 등", note: "닭육수 소바가 유명함" }
-                ]
-            },
-            {
-                date: "12/7 (일)",
-                day: 6,
-                title: "미나토가와 & 나하 입성",
-                region: "South",
-                stay: "남부 호텔 (1박)",
-                schedule: [
-                    { time: "10:30", activity: "체크아웃 및 이동", note: "나하시 방향으로 이동" },
-                    { time: "11:30", activity: "미나토가와 스테이트사이드 타운", note: "미군 주택 개조 거리. 사진 찍기 좋음", mapCode: "33 341 033*55" },
-                    { time: "12:00", activity: "점심 & 카페: 오하코르테, 세라도 커피", note: "타르트 맛집, 로스터리 커피" },
-                    { time: "15:00", activity: "나하 호텔 체크인", note: "국제거리 도보 이동 가능한 곳 추천" },
-                    { time: "17:00", activity: "국제거리 쇼핑 (돈키호테 등)", note: "기념품 구매", mapCode: "33 157 435*41" },
-                    { time: "19:00", activity: "저녁: 야키니쿠 플심 (술 무제한)", note: "예약 추천. 천엔 술 무제한 즐기기", mapCode: "33 157 532*71" }
-                ]
-            },
-            {
-                date: "12/8 (월)",
-                day: 7,
-                title: "남부 관광과 마지막 밤",
-                region: "South",
-                stay: "남부 호텔 (2박)",
-                schedule: [
-                    { time: "10:00", activity: "슈리성 산책", note: "류큐 왕국의 역사 (일부 복원 공사중일 수 있음)", mapCode: "33 161 526*55" },
-                    { time: "12:30", activity: "점심: 마제멘 마호로바", note: "국제거리 근처 비빔라멘 맛집", mapCode: "33 157 266*82" },
-                    { time: "14:30", activity: "우미카지 테라스", note: "공항 근처 하얀 건물 쇼핑몰. 비행기 이착륙 뷰", mapCode: "33 002 602*06" },
-                    { time: "17:00", activity: "마지막 쇼핑 (류보 백화점 등)", note: "프랑프랑, 무인양품 등" },
-                    { time: "19:30", activity: "마지막 만찬 (이자카야)", note: "포장마차 거리(야타이무라) 분위기 즐기기", mapCode: "33 157 406*41" }
-                ]
-            },
-            {
-                date: "12/9 (화)",
-                day: 8,
-                title: "귀국",
-                region: "South",
-                stay: "집으로",
-                schedule: [
-                    { time: "09:00", activity: "체크아웃", note: "짐 빠진 것 없는지 확인" },
-                    { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카 반납 후 공항 셔틀 탑승. (주유 필수!)" },
-                    { time: "11:00", activity: "나하 공항 도착", note: "면세점 쇼핑 및 점심 식사" },
-                    { time: "13:00", activity: "출국", note: "행복했던 신혼여행 마무리" }
-                ]
-            }
+            { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 북부 이동", stay: "북부 리조트", schedule: [
+                { time: "12:00", activity: "나하 공항 도착", note: "입국 수속" },
+                { time: "13:30", activity: "렌터카 픽업", note: "마리오 렌터카", mapCode: "33 095 244*60" },
+                { time: "14:30", activity: "북부 이동 (고속도로)", note: "쿄다 IC 하차" },
+                { time: "18:30", activity: "저녁 식사", note: "우후야 or 캡틴 캥거루" }
+            ]},
+            { date: "12/3 (수)", day: 2, title: "츄라우미 & 비세후쿠길", stay: "북부 리조트", schedule: [
+                { time: "10:00", activity: "츄라우미 수족관", note: "오키짱 쇼 관람", mapCode: "553 075 797*77" },
+                { time: "13:00", activity: "점심: 삿짱소바", note: "현지인 맛집", mapCode: "553 046 397*55" },
+                { time: "14:30", activity: "비세후쿠길 산책", note: "자전거 렌트 추천", mapCode: "553 105 654*77" }
+            ]},
+            { date: "12/4 (목)", day: 3, title: "코우리 & 맥주 공장", stay: "북부 리조트", schedule: [
+                { time: "10:30", activity: "코우리 대교", note: "쉬림프 웨건", mapCode: "485 662 041*33" },
+                { time: "14:00", activity: "오리온 해피파크", note: "예약 필수 / 운전자 논알콜", mapCode: "206 598 867*44" },
+                { time: "18:30", activity: "저녁: 이자카야", note: "야가지섬 근처 등" }
+            ]},
+            { date: "12/5 (금)", day: 4, title: "만자모 & 중부 이동", stay: "중부 호텔", schedule: [
+                { time: "11:30", activity: "만자모", note: "코끼리 바위", mapCode: "206 312 039*17" },
+                { time: "13:00", activity: "점심: 나카무라 소바", note: "또는 팬케이크" },
+                { time: "17:30", activity: "아메리칸 빌리지", note: "야경 및 쇼핑", mapCode: "33 526 450*63" }
+            ]},
+            { date: "12/6 (토)", day: 5, title: "푸른동굴 & 카페", stay: "중부 호텔", schedule: [
+                { time: "09:00", activity: "푸른동굴 스노클링", note: "마에다 곶", mapCode: "206 062 685*85" },
+                { time: "12:30", activity: "점심: 산스시", note: "교토식 가정식", mapCode: "33 466 690*71" },
+                { time: "14:30", activity: "반타 카페", note: "호시노 리조트 뷰", mapCode: "33 882 485*82" },
+                { time: "16:30", activity: "해중도로 드라이브", note: "여유로운 드라이브", mapCode: "499 576 274*33" }
+            ]},
+            { date: "12/7 (일)", day: 6, title: "미나토가와 & 나하", stay: "남부 호텔", schedule: [
+                { time: "11:30", activity: "미나토가와 타운", note: "오하코르테 타르트", mapCode: "33 341 033*55" },
+                { time: "15:00", activity: "나하 체크인", note: "국제거리 인근" },
+                { time: "19:00", activity: "저녁: 야키니쿠 플심", note: "천엔 술 무제한", mapCode: "33 157 532*71" }
+            ]},
+            { date: "12/8 (월)", day: 7, title: "남부 관광", stay: "남부 호텔", schedule: [
+                { time: "10:00", activity: "슈리성", note: "류큐 왕국", mapCode: "33 161 526*55" },
+                { time: "12:30", activity: "점심: 마제멘 마호로바", note: "비빔라멘", mapCode: "33 157 266*82" },
+                { time: "14:30", activity: "우미카지 테라스", note: "공항 근처 뷰맛집", mapCode: "33 002 602*06" }
+            ]},
+            { date: "12/9 (화)", day: 8, title: "귀국", stay: "집으로", schedule: [
+                { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카" },
+                { time: "11:00", activity: "나하 공항", note: "면세점 및 식사" },
+                { time: "13:00", activity: "출국", note: "Happy Honeymoon!" }
+            ]}
         ];
 
-        // 2. Food Data
         const foodPlaces = {
-            north: [
-                { name: "삿짱소바", desc: "츄라우미 가는 길 현지 맛집, 세트 1000엔대", map: "553 046 397*55" },
-                { name: "오리온 해피파크", desc: "공장 견학 및 갓 만든 맥주 시음", map: "206 598 867*44" },
-                { name: "쉬림프 웨건", desc: "코우리 대교 명물 갈릭 쉬림프", map: "485 692 129*71" }
-            ],
-            central: [
-                { name: "미나토가와 오하코르테", desc: "과일 타르트 전문점, 감성 인테리어", map: "33 341 002*28" },
-                { name: "세라도 커피", desc: "직접 로스팅한 원두, 미나토가와", map: "33 341 062*77" },
-                { name: "이시구후", desc: "오키나와 초대 소바 왕좌, 닭육수", map: "33 341 123*22" },
-                { name: "플라우만스 런치 베이커리", desc: "언덕 위 빵과 브런치, 뷰 맛집", map: "33 440 259*55" },
-                { name: "산스시", desc: "정갈한 교토식 일식 요리", map: "33 466 690*71" },
-                { name: "반타 카페", desc: "호시노 리조트 운영, 압도적 오션뷰", map: "33 882 485*82" }
-            ],
-            south: [
-                { name: "야끼니꾸 플심", desc: "국제거리, 1000엔 술 무제한 야키니쿠", map: "33 157 532*71" },
-                { name: "마제멘 마호로바", desc: "중독성 있는 비빔라멘", map: "33 157 266*82" },
-                { name: "포장마차 거리 (야타이무라)", desc: "다양한 안주와 술, 활기찬 분위기", map: "33 157 406*41" }
-            ]
+            north: [{name:"삿짱소바",desc:"현지 맛집",map:"553 046 397*55"}, {name:"쉬림프 웨건",desc:"코우리대교 갈릭새우",map:"485 692 129*71"}, {name:"우후야",desc:"백년고가 아구돼지",map:"206 745 056*82"}],
+            central: [{name:"오하코르테",desc:"미나토가와 타르트",map:"33 341 002*28"}, {name:"이시구후",desc:"닭육수 소바",map:"33 341 123*22"}, {name:"반타 카페",desc:"압도적 오션뷰",map:"33 882 485*82"}],
+            south: [{name:"야끼니꾸 플심",desc:"술 무제한 야키니쿠",map:"33 157 532*71"}, {name:"마제멘 마호로바",desc:"비빔라멘",map:"33 157 266*82"}, {name:"야타이무라",desc:"포장마차 거리",map:"33 157 406*41"}]
         };
 
-        // 3. Global Code Map for Search
         const searchCodes = [
-            { name: "츄라우미 수족관", code: "553 075 797*77" },
-            { name: "코우리 대교", code: "485 662 041*33" },
-            { name: "만자모", code: "206 312 039*17" },
-            { name: "아메리칸 빌리지", code: "33 526 450*63" },
-            { name: "푸른동굴(마에다곶)", code: "206 062 685*85" },
-            { name: "미나토가와 스테이트사이드", code: "33 341 033*55" },
-            { name: "슈리성", code: "33 161 526*55" },
-            { name: "우미카지 테라스", code: "33 002 602*06" },
-            { name: "국제거리(입구)", code: "33 157 435*41" },
-            { name: "오리온 해피파크", code: "206 598 867*44" },
-            { name: "이온몰 라이카무", code: "33 530 406*45" }
+            {name:"츄라우미 수족관",code:"553 075 797*77"}, {name:"코우리 대교",code:"485 662 041*33"}, {name:"만자모",code:"206 312 039*17"},
+            {name:"아메리칸 빌리지",code:"33 526 450*63"}, {name:"푸른동굴",code:"206 062 685*85"}, {name:"미나토가와",code:"33 341 033*55"},
+            {name:"슈리성",code:"33 161 526*55"}, {name:"우미카지 테라스",code:"33 002 602*06"}, {name:"국제거리",code:"33 157 435*41"}
         ];
 
-        // --- FUNCTIONS ---
+        // --- RENDER LOGIC ---
+        function initApp() {
+            renderChart();
+            renderTabs();
+            renderFood();
+            initSearch();
+        }
 
-        // Render Chart
-        function initCharts() {
+        function renderChart() {
             const ctx = document.getElementById('tripChart').getContext('2d');
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['북부 (힐링/자연)', '중부 (액티비티/카페)', '남부 (도시/쇼핑)'],
-                    datasets: [{
-                        data: [3, 2, 2], // 3 nights, 2 nights, 2 nights
-                        backgroundColor: [
-                            '#10B981', // Emerald 500
-                            '#0EA5E9', // Sky 500
-                            '#6366F1'  // Indigo 500
-                        ],
-                        borderWidth: 0
-                    }]
+                    labels: ['북부', '중부', '남부'],
+                    datasets: [{ data: [3, 2, 2], backgroundColor: ['#10B981', '#0EA5E9', '#6366F1'], borderWidth: 0 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + context.raw + '박';
-                                }
-                            }
-                        }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } }
             });
         }
 
-        // Render Itinerary Tabs & Content
-        function renderItinerary() {
-            const tabContainer = document.getElementById('date-tabs');
-            const contentContainer = document.getElementById('day-content');
-            
-            // Create Tabs
-            itinerary.forEach((day, index) => {
+        function renderTabs() {
+            const container = document.getElementById('date-tabs');
+            itinerary.forEach((day, idx) => {
                 const btn = document.createElement('button');
-                btn.className = `flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${index === 0 ? 'active-tab' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}`;
+                btn.className = `flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${idx === 0 ? 'active-tab' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}`;
                 btn.innerText = day.date;
-                btn.onclick = () => switchTab(index);
-                tabContainer.appendChild(btn);
+                btn.onclick = () => switchTab(idx);
+                container.appendChild(btn);
             });
-
-            // Initial Render
             switchTab(0);
         }
 
-        function switchTab(index) {
-            // Update Tab Styles
+        function switchTab(idx) {
             const tabs = document.getElementById('date-tabs').children;
-            for(let i=0; i<tabs.length; i++) {
-                if(i === index) {
-                    tabs[i].className = 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors active-tab';
-                } else {
-                    tabs[i].className = 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors bg-white text-slate-500 border-slate-200 hover:bg-slate-50';
-                }
-            }
-
-            // Update Content
-            const data = itinerary[index];
-            const contentContainer = document.getElementById('day-content');
+            for(let i=0; i<tabs.length; i++) tabs[i].className = i===idx ? 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors active-tab' : 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors bg-white text-slate-500 border-slate-200 hover:bg-slate-50';
+            
+            const data = itinerary[idx];
             document.getElementById('current-day-display').innerText = data.day;
-
-            let scheduleHTML = '';
+            
+            let html = `<div class="bg-white rounded-xl p-4 mb-4 border-l-4 ${idx < 3 ? 'border-emerald-500' : (idx < 5 ? 'border-sky-500' : 'border-indigo-500')} shadow-sm">
+                        <h3 class="text-xl font-bold text-slate-800">${data.title}</h3>
+                        <p class="text-sm text-slate-500 mt-1"><i class="fa-solid fa-bed mr-2"></i>${data.stay}</p>
+                        </div><div class="relative mt-6"><div class="timeline-line"></div>`;
+            
             data.schedule.forEach(item => {
-                scheduleHTML += `
-                    <div class="relative pl-8 pb-8 group">
-                        <!-- Timeline Dot -->
-                        <div class="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm z-10 ${index < 3 ? 'bg-emerald-500' : (index < 5 ? 'bg-sky-500' : 'bg-indigo-500')}"></div>
-                        
+                html += `<div class="relative pl-8 pb-8 group">
+                        <div class="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm z-10 ${idx < 3 ? 'bg-emerald-500' : (idx < 5 ? 'bg-sky-500' : 'bg-indigo-500')}"></div>
                         <div class="bg-slate-50 rounded-xl p-4 card-hover border border-slate-100">
                             <div class="flex justify-between items-start mb-1">
                                 <span class="font-bold text-slate-800 text-lg">${item.time}</span>
@@ -522,104 +302,59 @@
                             </div>
                             <h4 class="font-bold text-base text-slate-700 mb-1">${item.activity}</h4>
                             <p class="text-sm text-slate-500">${item.note}</p>
-                        </div>
-                    </div>
-                `;
+                        </div></div>`;
             });
-
-            contentContainer.innerHTML = `
-                <div class="bg-white rounded-xl p-4 mb-4 border-l-4 ${index < 3 ? 'border-emerald-500' : (index < 5 ? 'border-sky-500' : 'border-indigo-500')} shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-800">${data.title}</h3>
-                    <p class="text-sm text-slate-500 mt-1"><i class="fa-solid fa-bed mr-2"></i>숙소: ${data.stay}</p>
-                </div>
-                <div class="relative mt-6">
-                    <div class="timeline-line"></div>
-                    ${scheduleHTML}
-                </div>
-            `;
+            document.getElementById('day-content').innerHTML = html + '</div>';
         }
 
-        // Render Food Lists
         function renderFood() {
-            const createCard = (item) => `
-                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 card-hover cursor-pointer" onclick="navigator.clipboard.writeText('${item.map.split('*')[0]}')">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-slate-700">${item.name}</h4>
-                        <i class="fa-solid fa-location-dot text-slate-400 text-xs"></i>
-                    </div>
-                    <p class="text-xs text-slate-500 mt-1">${item.desc}</p>
-                    <div class="mt-2 text-xs font-mono text-slate-400 bg-white p-1 rounded inline-block border border-slate-200">
-                        Map: ${item.map}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('food-north-list').innerHTML = foodPlaces.north.map(createCard).join('');
-            document.getElementById('food-central-list').innerHTML = foodPlaces.central.map(createCard).join('');
-            document.getElementById('food-south-list').innerHTML = foodPlaces.south.map(createCard).join('');
+            const makeCard = (item) => `<div class="bg-slate-50 p-3 rounded-lg border border-slate-100 card-hover cursor-pointer" onclick="navigator.clipboard.writeText('${item.map.split('*')[0]}')">
+                <div class="flex justify-between items-center"><h4 class="font-bold text-slate-700">${item.name}</h4><i class="fa-solid fa-location-dot text-slate-400 text-xs"></i></div>
+                <p class="text-xs text-slate-500 mt-1">${item.desc}</p><div class="mt-2 text-xs font-mono text-slate-400 bg-white p-1 rounded inline-block border border-slate-200">Map: ${item.map}</div></div>`;
+            
+            document.getElementById('food-north-list').innerHTML = foodPlaces.north.map(makeCard).join('');
+            document.getElementById('food-central-list').innerHTML = foodPlaces.central.map(makeCard).join('');
+            document.getElementById('food-south-list').innerHTML = foodPlaces.south.map(makeCard).join('');
         }
 
-        // Map Code Search
         function initSearch() {
-            const input = document.getElementById('mapcode-search');
-            const resultDiv = document.getElementById('search-results');
-
-            input.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                if(query.length < 1) {
-                    resultDiv.innerHTML = '';
-                    return;
-                }
-
-                const filtered = searchCodes.filter(item => item.name.toLowerCase().includes(query));
-                
-                if(filtered.length === 0) {
-                    resultDiv.innerHTML = '<p class="text-slate-400 col-span-2 text-center">검색 결과가 없습니다.</p>';
-                    return;
-                }
-
-                resultDiv.innerHTML = filtered.map(item => `
-                    <div class="bg-slate-700 p-3 rounded flex justify-between items-center hover:bg-slate-600 transition cursor-pointer" onclick="navigator.clipboard.writeText('${item.code.split('*')[0]}')">
-                        <span>${item.name}</span>
-                        <span class="font-mono text-sky-300 text-xs">${item.code} <i class="fa-solid fa-copy ml-1"></i></span>
-                    </div>
-                `).join('');
+            document.getElementById('mapcode-search').addEventListener('input', (e) => {
+                const val = e.target.value.toLowerCase();
+                const res = document.getElementById('search-results');
+                if(!val) { res.innerHTML = ''; return; }
+                const hits = searchCodes.filter(i => i.name.toLowerCase().includes(val));
+                res.innerHTML = hits.length ? hits.map(i => `<div class="bg-slate-700 p-3 rounded flex justify-between items-center hover:bg-slate-600 transition cursor-pointer" onclick="navigator.clipboard.writeText('${i.code.split('*')[0]}')"><span>${i.name}</span><span class="font-mono text-sky-300 text-xs">${i.code} <i class="fa-solid fa-copy ml-1"></i></span></div>`).join('') : '<p class="text-slate-400 col-span-2 text-center">결과 없음</p>';
             });
         }
 
-        // --- GEMINI API INTEGRATION ---
-        
-        // 수정된 부분: API 키를 코드에 직접 넣지 않고 브라우저에서 불러옵니다.
+        // --- SECURE AI LOGIC ---
+        let isChatOpen = false;
+
         function getApiKey() {
             let key = localStorage.getItem('gemini_api_key');
             if (!key) {
-                key = prompt("Gemini API 키를 입력해주세요.\n(입력된 키는 이 기기의 브라우저에만 안전하게 저장됩니다.)");
+                key = prompt("🔒 Gemini API 키를 입력해주세요.\n(키는 이 브라우저에만 안전하게 저장됩니다)");
                 if (key) {
                     localStorage.setItem('gemini_api_key', key);
-                    alert("API 키가 저장되었습니다! 이제 AI 기능을 사용할 수 있습니다.");
+                    alert("✅ API 키가 저장되었습니다.");
                 }
             }
             return key;
         }
 
-        // 키를 잘못 입력했을 때 초기화하는 기능
         function resetApiKey() {
             if(confirm("저장된 API 키를 삭제하고 다시 입력하시겠습니까?")) {
                 localStorage.removeItem('gemini_api_key');
+                alert("키가 삭제되었습니다. AI 기능을 다시 사용할 때 새 키를 입력해주세요.");
                 location.reload();
             }
         }
-
-        let isChatOpen = false;
 
         function toggleAIChat() {
             const modal = document.getElementById('ai-chat-modal');
             isChatOpen = !isChatOpen;
             if (isChatOpen) {
-                // 채팅창 열 때 키가 없으면 물어봄
-                if(!localStorage.getItem('gemini_api_key')) {
-                    getApiKey();
-                }
+                if(!localStorage.getItem('gemini_api_key')) getApiKey();
                 modal.classList.remove('hidden');
                 modal.classList.add('animate-slide-up');
                 setTimeout(() => document.getElementById('ai-input').focus(), 300);
@@ -629,102 +364,72 @@
         }
 
         function sendQuickPrompt(type) {
-            let prompt = "";
-            switch(type) {
-                case 'recommend':
-                    prompt = "오키나와 여행 중인데, 로맨틱한 분위기의 맛집이나 숨겨진 명소 하나만 추천해줘. 너무 길지 않게 핵심만.";
-                    break;
-                case 'translate':
-                    prompt = "일본 여행 중 식당이나 호텔에서 자주 쓰는 유용한 일본어 문장 3개만 알려줘 (발음 포함).";
-                    break;
-                case 'weather':
-                    prompt = "오키나와에 비가 올 때 할 수 있는 실내 데이트 코스나 활동 추천해줘.";
-                    break;
-            }
-            document.getElementById('ai-input').value = prompt;
+            const prompts = {
+                recommend: "오키나와 여행 중인데, 로맨틱한 분위기의 맛집이나 숨겨진 명소 하나만 추천해줘. 너무 길지 않게 핵심만.",
+                translate: "일본 식당이나 호텔에서 자주 쓰는 유용한 일본어 문장 3개만 알려줘 (발음 포함)."
+            };
+            const input = document.getElementById('ai-input');
+            input.value = prompts[type] || "";
             sendMessage();
         }
 
-        function handleEnter(e) {
-            if (e.key === 'Enter') sendMessage();
+        function handleEnter(e) { if(e.key === 'Enter') sendMessage(); }
+
+        function addMessage(role, text) {
+            const div = document.createElement('div');
+            const id = 'msg-' + Date.now();
+            div.id = id;
+            div.className = role === 'user' ? "flex items-start gap-2 justify-end" : "flex items-start gap-2";
+            div.innerHTML = role === 'user' 
+                ? `<div class="bg-violet-500 text-white p-3 rounded-lg shadow-sm max-w-[85%] text-left">${text}</div>`
+                : `<div class="bg-violet-100 p-2 rounded-full flex-shrink-0"><i class="fa-solid fa-robot text-violet-600"></i></div><div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 max-w-[85%] text-slate-700 prose text-sm">${text}</div>`;
+            const container = document.getElementById('chat-messages');
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return id;
         }
 
         async function sendMessage() {
-            // 키 확인
-            const apiKey = getApiKey();
-            if (!apiKey) {
-                alert("API 키가 필요합니다.");
-                return;
-            }
+            const key = getApiKey();
+            if (!key) return;
 
             const input = document.getElementById('ai-input');
-            const message = input.value.trim();
-            if (!message) return;
+            const msg = input.value.trim();
+            if (!msg) return;
 
-            // Add User Message to Chat
-            addMessageToChat('user', message);
+            addMessage('user', msg);
             input.value = '';
-
-            // Show Loading
-            const loadingId = addMessageToChat('ai', '<i class="fa-solid fa-spinner fa-spin"></i> 생각 중...');
+            const loadId = addMessage('ai', '<i class="fa-solid fa-spinner fa-spin"></i> 생각 중...');
 
             try {
-                // 수정된 부분: 함수 인자로 apiKey 전달
-                const response = await callGemini(message, apiKey);
-                updateMessage(loadingId, response);
-            } catch (error) {
-                updateMessage(loadingId, "죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                console.error(error);
-            }
-        }
-        
-            if (role === 'user') {
-        async function callGemini(userPrompt, key) {
-            const systemPrompt = "당신은 오키나와 허니문 여행을 돕는 로맨틱하고 친절한 AI 컨시어지입니다. 신혼부부를 위해 다정하게 대답해주세요. 답변은 모바일에서 읽기 쉽게 짧고 간결하게(300자 이내) 작성하세요. 일본어 회화 요청 시 발음과 의미를 정확히 알려주세요. 맛집 추천 시 맵코드가 있다면 좋겠지만 없어도 괜찮습니다.";
-            
-            try {
-                // 수정된 부분: 전달받은 key 사용
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: userPrompt }]
-                        }],
-                        systemInstruction: {
-                            parts: [{ text: systemPrompt }]
-                        }
+                        contents: [{ parts: [{ text: msg }] }],
+                        systemInstruction: { parts: [{ text: "당신은 오키나와 허니문 여행 컨시어지입니다. 친절하고 간결하게(300자 이내) 답변하세요." }] }
                     })
                 });
 
-                if (!response.ok) {
-                    if (response.status === 400 || response.status === 403) {
-                        throw new Error('API Key가 유효하지 않습니다. 키를 재설정해주세요.');
-                    }
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) throw new Error(response.status === 400 || response.status === 403 ? 'KEY_ERROR' : 'NET_ERROR');
                 
                 const data = await response.json();
-                return data.candidates[0].content.parts[0].text;
-            } catch (error) {
-                console.error('Gemini API Error:', error);
-                if (error.message.includes('API Key')) {
-                    resetApiKey(); // 키 에러 발생 시 재설정 유도
+                const aiText = data.candidates[0].content.parts[0].text;
+                
+                const contentDiv = document.getElementById(loadId).querySelector('.bg-white');
+                contentDiv.innerHTML = marked.parse(aiText);
+            } catch (err) {
+                const contentDiv = document.getElementById(loadId).querySelector('.bg-white');
+                if (err.message === 'KEY_ERROR') {
+                    contentDiv.innerHTML = '⚠️ API 키가 잘못된 것 같습니다. <button onclick="resetApiKey()" class="underline text-red-500">여기</button>를 눌러 키를 다시 입력해주세요.';
+                } else {
+                    contentDiv.innerText = '죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
                 }
-                throw error;
+                console.error(err);
             }
         }
 
-        // Initialize Everything
-        window.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-            renderItinerary();
-            renderFood();
-            initSearch();
-        });
-
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
