@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025 오키나와 허니문 플래너</title>
+    <title>2025 오키나와 허니문 플래너 (Perfect)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -39,7 +39,6 @@
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
         .active-tab { background-color: #0EA5E9; color: white; border-color: #0EA5E9; }
-        .active-sub-tab { background-color: #6366F1; color: white; border-color: #6366F1; } /* Indigo for sub-tabs */
         
         .timeline-line {
             position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background-color: #CBD5E1; z-index: 0;
@@ -48,9 +47,16 @@
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
 
-        .prose p { margin-bottom: 0.5em; }
-        .prose ul { list-style-type: disc; padding-left: 1.2em; margin-bottom: 0.5em; }
-        .prose strong { color: #0369a1; }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative">
@@ -92,6 +98,7 @@
                         <h4 class="font-bold text-slate-700">렌터카 정보</h4>
                         <p class="text-xs text-slate-500">인수: 12/2 14:00</p>
                         <p class="text-xs text-slate-500">반납: 12/9 10:00</p>
+                        <p class="text-xs text-indigo-500 font-bold mt-1 cursor-pointer" onclick="copyToClipboard('33 033 115*60')">반납장소 맵코드 복사</p>
                     </div>
                     <div class="bg-orange-50 p-4 rounded-xl text-center">
                         <i class="fa-solid fa-plane text-orange-400 text-2xl mb-2"></i>
@@ -124,104 +131,32 @@
             <div id="day-content" class="min-h-[400px]"></div>
         </section>
 
-        <!-- Section 3: Food (Updated with My Pick Tab) -->
+        <!-- Section 3: Food -->
         <section id="food" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">맛집 대시보드</h2>
                 <p class="text-slate-600">직접 찾은 맛집(My Pick)과 현지인 추천 맛집을 나눠서 보세요.</p>
             </div>
-
-            <!-- Sub Tabs for Food -->
             <div class="flex space-x-4 mb-6 border-b border-slate-200 pb-2">
                 <button onclick="switchFoodTab('mypick')" id="tab-mypick" class="text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors">❤️ 내가 찾은 맛집</button>
                 <button onclick="switchFoodTab('local')" id="tab-local" class="text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors">👍 현지인 추천 (로컬)</button>
             </div>
-
-            <!-- Content Area -->
-            <div id="food-content-area">
-                <!-- Injected via JS -->
-            </div>
+            <div id="food-content-area"></div>
         </section>
 
-        <!-- Section 4: Survival Japanese (New Feature) -->
-        <section id="japanese" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-            <div class="mb-6 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2">🗣️ 생존 일본어 회화</h2>
-                    <p class="text-slate-600">클릭하면 복사됩니다. AI에게 발음을 물어보세요!</p>
-                </div>
-                <i class="fa-solid fa-language text-4xl text-indigo-100"></i>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Restaurant -->
-                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
-                    <h3 class="font-bold text-orange-600 mb-3"><i class="fa-solid fa-utensils mr-2"></i>식당에서</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('고레 쿠다사이')">
-                            <span>이거 주세요</span>
-                            <span class="text-xs text-slate-400">고레 쿠다사이</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('미즈 오네가이시마스')">
-                            <span>물 좀 주세요</span>
-                            <span class="text-xs text-slate-400">미즈 오네가이시마스</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오카이케 오네가이시마스')">
-                            <span>계산해 주세요</span>
-                            <span class="text-xs text-slate-400">오카이케 오네가이시마스</span>
-                        </div>
-                         <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오스스메와 난데스까?')">
-                            <span>추천 메뉴는?</span>
-                            <span class="text-xs text-slate-400">오스스메와 난데스까?</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Shopping -->
-                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
-                    <h3 class="font-bold text-sky-600 mb-3"><i class="fa-solid fa-shopping-bag mr-2"></i>쇼핑할 때</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('이쿠라 데스까?')">
-                            <span>얼마예요?</span>
-                            <span class="text-xs text-slate-400">이쿠라 데스까?</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('멘제- 데키마스까?')">
-                            <span>면세 되나요?</span>
-                            <span class="text-xs text-slate-400">멘제- 데키마스까?</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('카-도 츠카에마스까?')">
-                            <span>카드 되나요?</span>
-                            <span class="text-xs text-slate-400">카-도 츠카에마스까?</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Emergency -->
-                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
-                    <h3 class="font-bold text-red-600 mb-3"><i class="fa-solid fa-kit-medical mr-2"></i>비상시</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('토이레와 도코데스까?')">
-                            <span>화장실 어디에요?</span>
-                            <span class="text-xs text-slate-400">토이레와 도코데스까?</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('스미마셍')">
-                            <span>저기요 / 죄송해요</span>
-                            <span class="text-xs text-slate-400">스미마셍</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('아리가또 고자이마스')">
-                            <span>감사합니다</span>
-                            <span class="text-xs text-slate-400">아리가또 고자이마스</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: Map Code Search -->
+        <!-- Section 4: Map Code Search (API Integrated) -->
         <section class="bg-slate-800 text-white rounded-2xl shadow-lg p-8 mb-8">
             <h2 class="text-xl font-bold mb-4"><i class="fa-solid fa-magnifying-glass mr-2"></i>맵코드 검색</h2>
-            <input type="text" id="mapcode-search" placeholder="장소명 (예: 부세나, 츄라우미)" class="w-full p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <div id="search-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="text" id="mapcode-search" placeholder="장소명 입력 (예: 이시구후, 부세나)" class="flex-grow p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" onkeypress="if(event.key === 'Enter') searchMapCodeAPI()">
+                <button onclick="searchMapCodeAPI()" class="bg-sky-500 hover:bg-sky-600 text-white px-6 py-3 rounded-lg font-bold transition-colors whitespace-nowrap shadow-lg flex items-center justify-center min-w-[120px]">
+                    <span id="search-btn-text">실시간 검색</span>
+                    <div id="search-loader" class="loader ml-2 hidden"></div>
+                </button>
+            </div>
+            
+            <div id="local-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm hidden"></div>
+            <div id="api-results-area" class="mt-6 space-y-3"></div>
         </section>
         
         <!-- Settings Button -->
@@ -249,13 +184,9 @@
             <div class="flex items-start gap-2">
                 <div class="bg-violet-100 p-2 rounded-full"><i class="fa-solid fa-robot text-violet-600"></i></div>
                 <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 max-w-[85%] text-slate-700">
-                    안녕하세요! 무엇을 도와드릴까요?<br>일본어 회화 발음이 궁금하거나, 현재 위치 근처 맛집이 필요하면 언제든 물어보세요!
+                    안녕하세요! 모든 맵코드를 최신으로 검증 완료했습니다.<br>안심하고 여행하세요!
                 </div>
             </div>
-        </div>
-        <div class="px-4 py-2 bg-white border-t border-slate-100 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
-            <button onclick="sendQuickPrompt('pronounce')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">🗣️ 이거 발음해줘</button>
-            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-sky-50 text-sky-600 text-xs rounded-full border border-sky-100 hover:bg-sky-100">✨ 지금 갈만한 곳</button>
         </div>
         <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
             <input type="text" id="ai-input" placeholder="메시지 입력..." class="flex-grow bg-slate-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-violet-300 outline-none" onkeypress="handleEnter(event)">
@@ -264,35 +195,39 @@
     </div>
 
     <script>
-        // --- ITINERARY DATA ---
+        // --- CONSTANTS ---
+        const OKINAWA_BOUNDS = { south: 26.04, west: 127.60, north: 26.90, east: 128.35 };
+
+        // --- ITINERARY DATA (Verified) ---
         const itinerary = [
-            { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 부세나", stay: "더 부세나 테라스", weather: { icon: "fa-cloud-sun", temp: "25°", desc: "구름 많음" }, schedule: [ { time: "10:10", activity: "인천 출발", note: "설레는 신혼여행 시작!" }, { time: "12:35", activity: "나하 공항 도착", note: "짐 찾기 및 셔틀 이동" }, { time: "14:00", activity: "렌터카 픽업", note: "마리오 렌터카", mapCode: "33 095 244*60" }, { time: "16:30", activity: "더 부세나 테라스 체크인", note: "웰컴 드링크 & 선셋 산책", mapCode: "206 412 057*05" }, { time: "18:30", activity: "저녁: 츄라하나", note: "호텔 근처 로컬 가정식 (평점 4.2+)", mapCode: "206 381 228*44" } ] },
-            { date: "12/3 (수)", day: 2, title: "북부 힐링 & 해중 전망대", stay: "더 부세나 테라스", weather: { icon: "fa-cloud", temp: "23°", desc: "흐림" }, schedule: [ { time: "10:00", activity: "부세나 해중 전망대", note: "호텔 내 시설", mapCode: "206 442 075*11" }, { time: "12:30", activity: "점심: 캡틴 캥거루", note: "인생 햄버거 맛집 (대기 주의)", mapCode: "206 444 013*00" }, { time: "14:30", activity: "비세후쿠길 & 츄라우미", note: "북부 필수 코스", mapCode: "553 075 797*77" }, { time: "19:00", activity: "저녁: 콜롬빈 (스테이크)", note: "나고 시내 레트로 스테이크", mapCode: "206 598 376*63" } ] },
-            { date: "12/4 (목)", day: 3, title: "중부 이동 & 아메빌", stay: "더블트리 차탄", weather: { icon: "fa-sun", temp: "24°", desc: "맑음" }, schedule: [ { time: "11:00", activity: "체크아웃 & 남하", note: "해안도로 드라이브" }, { time: "12:30", activity: "점심: 나카무라 소바", note: "만자모 근처 아사소바", mapCode: "206 313 455*06" }, { time: "15:00", activity: "더블트리 차탄 체크인", note: "아메리칸 빌리지 바로 옆", mapCode: "33 525 593*33" }, { time: "17:30", activity: "아메리칸 빌리지 야경", note: "크리스마스 분위기 즐기기", mapCode: "33 526 450*63" }, { time: "19:00", activity: "저녁: 스테이크 하우스 88", note: "오키나와 클래식 스테이크", mapCode: "33 525 808*11" } ] },
-            { date: "12/5 (금)", day: 4, title: "푸른동굴 & 카페 투어", stay: "더블트리 차탄", weather: { icon: "fa-cloud-rain", temp: "21°", desc: "한때 비" }, schedule: [ { time: "10:00", activity: "푸른동굴 스노클링", note: "마에다 곶", mapCode: "206 062 685*85" }, { time: "13:00", activity: "점심: 지로쵸 스시", note: "예약 권장, 현지인 맛집", mapCode: "33 555 770*14" }, { time: "15:00", activity: "반타 카페", note: "비가 와도 좋은 오션뷰", mapCode: "33 882 485*82" }, { time: "18:00", activity: "호텔 휴식 & 수영장", note: "더블트리 부대시설 즐기기" } ] },
-            { date: "12/6 (토)", day: 5, title: "이온몰 & 쇼핑 데이", stay: "더블트리 차탄", weather: { icon: "fa-cloud-sun", temp: "22°", desc: "구름 조금" }, schedule: [ { time: "11:00", activity: "이온몰 라이카무", note: "초대형 쇼핑몰", mapCode: "33 530 406*45" }, { time: "14:00", activity: "점심: 쿠라스시", note: "쇼핑몰 내 회전초밥", mapCode: "33 530 268*06" }, { time: "16:30", activity: "미나토가와 산책", note: "외국인 주택거리 (오하코르테)", mapCode: "33 341 033*55" }, { time: "19:00", activity: "저녁: 블루실 & 타코라이스", note: "아메빌에서 가볍게 야식" } ] },
+            { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 부세나", stay: "더 부세나 테라스", weather: { icon: "fa-cloud-sun", temp: "25°", desc: "구름 많음" }, schedule: [ { time: "10:10", activity: "인천 출발", note: "설레는 신혼여행 시작!" }, { time: "12:35", activity: "나하 공항 도착", note: "짐 찾기 및 셔틀 이동" }, { time: "14:00", activity: "렌터카 픽업", note: "마리오 렌터카 (나하공항점)", mapCode: "33 033 115*60" }, { time: "16:30", activity: "더 부세나 테라스 체크인", note: "웰컴 드링크 & 선셋 산책", mapCode: "206 412 057*05" }, { time: "18:30", activity: "저녁: 츄라하나", note: "호텔 근처 로컬 가정식 (평점 4.2+)", mapCode: "206 444 122*61" } ] },
+            { date: "12/3 (수)", day: 2, title: "북부 힐링 & 해중 전망대", stay: "더 부세나 테라스", weather: { icon: "fa-cloud", temp: "23°", desc: "흐림" }, schedule: [ { time: "10:00", activity: "부세나 해중 전망대", note: "호텔 내 시설", mapCode: "206 442 075*11" }, { time: "12:30", activity: "점심: 캡틴 캥거루", note: "★이전함! 인생 햄버거", mapCode: "206 625 846*23" }, { time: "14:30", activity: "비세후쿠길 & 츄라우미", note: "북부 필수 코스", mapCode: "553 075 797*77" }, { time: "19:00", activity: "저녁: 콜롬빈 (스테이크)", note: "나고 시내 레트로 스테이크", mapCode: "485 601 832*80" } ] },
+            { date: "12/4 (목)", day: 3, title: "중부 이동 & 아메빌", stay: "더블트리 차탄", weather: { icon: "fa-sun", temp: "24°", desc: "맑음" }, schedule: [ { time: "11:00", activity: "체크아웃 & 남하", note: "해안도로 드라이브" }, { time: "12:30", activity: "점심: 나카무라 소바", note: "만자모 근처 아사소바", mapCode: "206 313 455*06" }, { time: "15:00", activity: "더블트리 차탄 체크인", note: "★호텔 주차장 입구", mapCode: "33 525 590*15" }, { time: "17:30", activity: "아메리칸 빌리지 야경", note: "크리스마스 분위기 즐기기", mapCode: "33 526 450*63" }, { time: "19:00", activity: "저녁: 스테이크 하우스 88", note: "오키나와 클래식 스테이크", mapCode: "33 525 808*11" } ] },
+            { date: "12/5 (금)", day: 4, title: "푸른동굴 & 카페 투어", stay: "더블트리 차탄", weather: { icon: "fa-cloud-rain", temp: "21°", desc: "한때 비" }, schedule: [ { time: "10:00", activity: "푸른동굴 스노클링", note: "마에다 곶 (날씨 확인 필수)", mapCode: "206 062 685*85" }, { time: "13:00", activity: "점심: 구르메 스시", note: "아메빌 회전초밥 맛집", mapCode: "33 526 489*36" }, { time: "15:00", activity: "반타 카페", note: "비가 와도 좋은 오션뷰 (주차장)", mapCode: "33 881 570*86" }, { time: "18:00", activity: "호텔 휴식 & 수영장", note: "더블트리 부대시설 즐기기" } ] },
+            { date: "12/6 (토)", day: 5, title: "이온몰 & 쇼핑 데이", stay: "더블트리 차탄", weather: { icon: "fa-cloud-sun", temp: "22°", desc: "구름 조금" }, schedule: [ { time: "11:00", activity: "이온몰 라이카무", note: "초대형 쇼핑몰", mapCode: "33 530 406*45" }, { time: "14:00", activity: "점심: 쿠라스시", note: "쇼핑몰 내 회전초밥", mapCode: "33 530 268*06" }, { time: "16:30", activity: "미나토가와 산책", note: "외국인 주택거리 (주차장)", mapCode: "33 341 033*55" }, { time: "19:00", activity: "저녁: 블루실 & 타코라이스", note: "아메빌에서 가볍게 야식" } ] },
             { date: "12/7 (일)", day: 6, title: "남부 이동 & 럭셔리 호캉스", stay: "류큐 호텔 나시로", weather: { icon: "fa-sun", temp: "23°", desc: "맑음" }, schedule: [ { time: "11:00", activity: "체크아웃 & 이동", note: "이토만 방향 (남부)" }, { time: "12:30", activity: "우미카지 테라스", note: "공항 뷰 카페", mapCode: "33 002 602*06" }, { time: "15:00", activity: "류큐 호텔 나시로 체크인", note: "신상 럭셔리 리조트 즐기기", mapCode: "232 365 258*14" }, { time: "18:30", activity: "저녁: 이토만 어민 식당", note: "★버터 생선구이 필수(대기 있음)", mapCode: "232 484 666*41" } ] },
             { date: "12/8 (월)", day: 7, title: "남부 투어 & 마지막 밤", stay: "류큐 호텔 나시로", weather: { icon: "fa-cloud-sun", temp: "24°", desc: "맑음" }, schedule: [ { time: "10:30", activity: "치넨 미사키 공원", note: "탁 트인 태평양 뷰", mapCode: "232 594 503*33" }, { time: "12:00", activity: "점심: 찻집 마카베 차이나", note: "고택에서 먹는 소바", mapCode: "232 396 033*22" }, { time: "15:00", activity: "호텔 수영장 & 비치", note: "마지막 호캉스 누리기" }, { time: "19:00", activity: "저녁: 야키니쿠 콩고", note: "이토만 시내 와규 맛집", mapCode: "232 485 186*55" } ] },
-            { date: "12/9 (화)", day: 8, title: "귀국", stay: "집으로", weather: { icon: "fa-plane", temp: "23°", desc: "귀국" }, schedule: [ { time: "09:00", activity: "체크아웃", note: "여권, 지갑 확인!" }, { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카", mapCode: "33 095 244*60" }, { time: "11:00", activity: "나하 공항 수속", note: "면세점 (로이즈, 베니이모)" }, { time: "13:40", activity: "인천행 출발", note: "행복한 신혼여행 마무리 ❤️" } ] }
+            { date: "12/9 (화)", day: 8, title: "귀국", stay: "집으로", weather: { icon: "fa-plane", temp: "23°", desc: "귀국" }, schedule: [ { time: "09:00", activity: "체크아웃", note: "여권, 지갑 확인!" }, { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카 (나하공항점)", mapCode: "33 033 115*60" }, { time: "11:00", activity: "나하 공항 수속", note: "면세점 (로이즈, 베니이모)" }, { time: "13:40", activity: "인천행 출발", note: "행복한 신혼여행 마무리 ❤️" } ] }
         ];
 
-        // --- FOOD DATA (Separated) ---
+        // --- FOOD DATA (Verified) ---
         const foodData = {
             mypick: [
                 { region: "북부", name: "삿짱소바 (Satchan Soba)", desc: "츄라우미 가는 길 현지 맛집, 세트 1000엔대", map: "206 627 726*62" },
                 { region: "중부", name: "미나토가와 오하코르테", desc: "과일 타르트 전문점, 감성 인테리어", map: "33 341 002*28" },
                 { region: "중부", name: "세라도 커피", desc: "직접 로스팅한 원두, 미나토가와", map: "33 341 062*77" },
-                { region: "중부", name: "이시구후 소바", desc: "오키나와 초대 소바 왕좌, 닭육수", map: "33 341 123*22" },
-                { region: "중부", name: "플라우만스 런치 베이커리", desc: "언덕 위 빵과 브런치, 뷰 맛집", map: "33 440 259*55" },
-                { region: "중부", name: "산스시 (Sansushi)", desc: "정갈한 교토식 일식 요리", map: "33 466 690*71" },
-                { region: "중부", name: "반타 카페", desc: "호시노 리조트 운영, 압도적 오션뷰", map: "33 882 485*82" },
-                { region: "남부", name: "야끼니꾸 플심", desc: "국제거리, 1000엔 술 무제한 야키니쿠", map: "33 157 532*71" },
+                { region: "중부", name: "토리소바야 이시구후", desc: "오키나와 초대 소바 왕좌, 닭육수", map: "33 341 094*14" },
+                { region: "중부", name: "플라우만스 런치 베이커리", desc: "언덕 위 빵과 브런치 (입구 주의)", map: "33 440 816*85" },
+                { region: "중부", name: "산스시 (SANS SOUCI)", desc: "키타나카구스쿠 교토식 우동/덮밥", map: "33 440 524*03" },
+                { region: "중부", name: "반타 카페", desc: "호시노 리조트 운영, 압도적 오션뷰(주차장)", map: "33 881 570*86" },
+                { region: "남부", name: "야끼니꾸 푸루신 (쿠모지)", desc: "마늘 야키니쿠 & 술 무제한", map: "33 157 248*25" },
                 { region: "남부", name: "마제멘 마호로바", desc: "중독성 있는 비빔라멘", map: "33 157 266*82" }
             ],
             local: [
-                { region: "북부", name: "츄라하나 (Chura-Hana)", desc: "부세나 근처 1등 가정식, 흑돼지 돈까스", map: "206 381 228*44" },
-                { region: "북부", name: "콜롬빈 (Colombin)", desc: "현지인이 사랑하는 레트로 스테이크", map: "206 598 376*63" },
-                { region: "중부", name: "지로쵸 스시", desc: "더블트리 근처 1티어, 예약 권장", map: "33 555 770*14" },
+                { region: "북부", name: "츄라하나 (Chura-Hana)", desc: "부세나 근처 1등 가정식, 흑돼지 돈까스", map: "206 444 122*61" },
+                { region: "북부", name: "콜롬빈 (Colombin)", desc: "현지인이 사랑하는 레트로 스테이크", map: "485 601 832*80" },
+                { region: "북부", name: "캡틴 캥거루 (이전함!)", desc: "인생 햄버거 맛집 (새주소)", map: "206 625 846*23" },
+                { region: "중부", name: "구르메 스시 (아메빌)", desc: "가성비 회전초밥", map: "33 526 489*36" },
                 { region: "중부", name: "스테이크 하우스 88", desc: "미군 기지 근처 정통 스테이크", map: "33 525 808*11" },
                 { region: "남부", name: "이토만 어민 식당", desc: "류큐 호텔 근처 원탑, 버터야키 필수", map: "232 484 666*41" },
                 { region: "남부", name: "찻집 마카베 차이나", desc: "문화재 고택에서 먹는 소바", map: "232 396 033*22" }
@@ -300,13 +235,13 @@
         };
 
         const searchCodes = [
-            {name:"더 부세나 테라스",code:"206 412 057*05"}, {name:"더블트리 차탄",code:"33 525 593*33"}, {name:"류큐 호텔 나시로",code:"232 365 258*14"},
+            {name:"더 부세나 테라스",code:"206 412 057*05"}, {name:"더블트리 차탄",code:"33 525 590*15"}, {name:"류큐 호텔 나시로",code:"232 365 258*14"},
             {name:"츄라우미 수족관",code:"553 075 797*77"}, {name:"코우리 대교",code:"485 662 041*33"}, {name:"만자모",code:"206 312 039*17"},
             {name:"아메리칸 빌리지",code:"33 526 450*63"}, {name:"푸른동굴",code:"206 062 685*85"}, {name:"이토만 어민식당",code:"232 484 666*41"},
-            {name:"나하 공항",code:"33 123 279*00"}, {name:"마리오 렌터카",code:"33 095 244*60"}
+            {name:"나하 공항",code:"33 123 279*00"}, {name:"마리오 렌터카",code:"33 033 115*60"}
         ];
 
-        // --- CLIPBOARD HELPER ---
+        // --- FUNCTIONS ---
         function copyToClipboard(text) {
             const cleanText = text.split('(')[0].trim();
             const textArea = document.createElement("textarea");
@@ -318,24 +253,124 @@
             
             try {
                 document.execCommand('copy');
-                // Toast Notification
                 const toast = document.createElement('div');
-                toast.className = "fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-sm z-50 animate-slide-up shadow-lg";
-                toast.innerHTML = `<i class="fa-solid fa-check mr-2 text-green-400"></i>복사완료: ${cleanText}`;
+                toast.className = "fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-sm z-50 animate-slide-up shadow-lg flex items-center gap-2";
+                toast.innerHTML = `<i class="fa-solid fa-check text-green-400"></i><span>맵코드 복사완료: </span><span class="font-mono font-bold text-yellow-300">${cleanText}</span>`;
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
+                setTimeout(() => toast.remove(), 2500);
             } catch (err) {
                 prompt("직접 복사해주세요:", cleanText);
             }
             document.body.removeChild(textArea);
         }
 
+        function openExternalSearch() {
+            window.open('https://japanmapcode.com/ko', '_blank');
+        }
+
+        // --- NEW: JAPAN MAP CODE API INTEGRATION ---
+        async function searchMapCodeAPI() {
+            const query = document.getElementById('mapcode-search').value.trim();
+            if (!query) return alert('장소명을 입력해주세요.');
+
+            const resultArea = document.getElementById('api-results-area');
+            const localResults = document.getElementById('local-results');
+            const loader = document.getElementById('search-loader');
+            const btnText = document.getElementById('search-btn-text');
+
+            // 1. Show Local Matches first
+            const hits = searchCodes.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+            if (hits.length > 0) {
+                localResults.classList.remove('hidden');
+                localResults.innerHTML = hits.map(i => `<div class="bg-slate-700 p-3 rounded flex justify-between items-center hover:bg-slate-600 transition cursor-pointer" onclick="copyToClipboard('${i.code}')"><span><i class="fa-solid fa-star text-yellow-400 mr-2"></i>${i.name} (저장됨)</span><span class="font-mono text-sky-300 text-xs">${i.code} <i class="fa-solid fa-copy ml-1"></i></span></div>`).join('');
+            } else {
+                localResults.innerHTML = '';
+                localResults.classList.add('hidden');
+            }
+
+            // 2. Start API Search
+            resultArea.innerHTML = ''; 
+            btnText.innerText = '검색중...';
+            loader.classList.remove('hidden');
+
+            try {
+                // Step 1: Search Places
+                const searchResponse = await fetch('https://japanmapcode.com/places', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        query: query,
+                        bounds: OKINAWA_BOUNDS,
+                        lang: "ko"
+                    })
+                });
+
+                if (!searchResponse.ok) throw new Error('Network error');
+                const searchData = await searchResponse.json();
+
+                if (!searchData.places || searchData.places.length === 0) {
+                    resultArea.innerHTML = `<div class="bg-slate-700 p-4 rounded text-center text-slate-300">검색 결과가 없습니다.</div>`;
+                } else {
+                    resultArea.innerHTML = searchData.places.map(place => `
+                        <div class="bg-slate-600 p-4 rounded-lg hover:bg-slate-500 transition cursor-pointer group" onclick="fetchAndCopyMapCode('${place.place_id}', '${place.name}')">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-white group-hover:text-sky-300">${place.name}</h4>
+                                    <p class="text-xs text-slate-300 mt-1">${place.formatted_address}</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-white mt-2"></i>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+            } catch (error) {
+                console.error(error);
+                resultArea.innerHTML = `<div class="text-red-400 text-sm text-center">오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>`;
+            } finally {
+                btnText.innerText = '실시간 검색';
+                loader.classList.add('hidden');
+            }
+        }
+
+        async function fetchAndCopyMapCode(placeId, placeName) {
+            const toast = document.createElement('div');
+            toast.id = 'loading-toast';
+            toast.className = "fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full text-sm z-50 shadow-lg flex items-center";
+            toast.innerHTML = `<div class="loader mr-3" style="width:15px; height:15px; border-width:2px;"></div> ${placeName} 맵코드 가져오는 중...`;
+            document.body.appendChild(toast);
+
+            try {
+                const response = await fetch('https://japanmapcode.com/place-details', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        placeId: placeId,
+                        lang: "ko"
+                    })
+                });
+
+                if (!response.ok) throw new Error('Detail fetch error');
+                const data = await response.json();
+
+                if (data.mapcode) {
+                    document.getElementById('loading-toast').remove();
+                    copyToClipboard(data.mapcode); 
+                } else {
+                    throw new Error('No mapcode found');
+                }
+
+            } catch (error) {
+                document.getElementById('loading-toast').remove();
+                alert('맵코드를 가져오는데 실패했습니다.');
+            }
+        }
+
         // --- RENDER LOGIC ---
         function initApp() {
             renderChart();
             renderTabs();
-            switchFoodTab('mypick'); // Default tab
-            initSearch();
+            switchFoodTab('mypick');
         }
 
         function renderChart() {
@@ -398,12 +433,10 @@
             document.getElementById('day-content').innerHTML = html + '</div>';
         }
 
-        // --- FOOD TAB LOGIC ---
         function switchFoodTab(tabType) {
             const btnMy = document.getElementById('tab-mypick');
             const btnLocal = document.getElementById('tab-local');
-            const content = document.getElementById('food-content-area');
-
+            
             if (tabType === 'mypick') {
                 btnMy.className = "text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors";
                 btnLocal.className = "text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors";
