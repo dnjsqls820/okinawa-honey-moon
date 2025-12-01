@@ -39,6 +39,7 @@
         .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
         .active-tab { background-color: #0EA5E9; color: white; border-color: #0EA5E9; }
+        .active-sub-tab { background-color: #6366F1; color: white; border-color: #6366F1; } /* Indigo for sub-tabs */
         
         .timeline-line {
             position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background-color: #CBD5E1; z-index: 0;
@@ -63,7 +64,7 @@
                     <h1 class="font-bold text-xl text-slate-800">Okinawa Honeymoon <span class="text-xs font-normal text-slate-500 block sm:inline">2025.12.02 - 12.09</span></h1>
                 </div>
                 <div class="text-sm font-medium text-sky-600">
-                    Day <span id="current-day-display">1</span>
+                    <span id="current-weather-icon"></span> Day <span id="current-day-display">1</span>
                 </div>
             </div>
         </div>
@@ -76,11 +77,11 @@
         <section id="overview" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">여행 개요</h2>
-                <p class="text-slate-600">오키나와 북부, 중부, 남부를 아우르는 7박 8일 허니문.</p>
+                <p class="text-slate-600">부세나(휴양) → 더블트리(시티) → 류큐호텔(럭셔리)로 이어지는 완벽한 동선.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="bg-slate-50 rounded-xl p-4">
-                    <h3 class="text-center font-semibold text-slate-700 mb-4">숙박 및 지역 배분</h3>
+                    <h3 class="text-center font-semibold text-slate-700 mb-4">숙박 일정 (7박)</h3>
                     <div class="chart-container">
                         <canvas id="tripChart"></canvas>
                     </div>
@@ -88,23 +89,25 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-sky-50 p-4 rounded-xl text-center">
                         <i class="fa-solid fa-car text-sky-500 text-2xl mb-2"></i>
-                        <h4 class="font-bold text-slate-700">렌터카</h4>
-                        <p class="text-xs text-slate-500">마리오 렌터카</p>
+                        <h4 class="font-bold text-slate-700">렌터카 정보</h4>
+                        <p class="text-xs text-slate-500">인수: 12/2 14:00</p>
+                        <p class="text-xs text-slate-500">반납: 12/9 10:00</p>
                     </div>
                     <div class="bg-orange-50 p-4 rounded-xl text-center">
-                        <i class="fa-solid fa-sun text-orange-400 text-2xl mb-2"></i>
-                        <h4 class="font-bold text-slate-700">12월 날씨</h4>
-                        <p class="text-xs text-slate-500">평균 20°C (선선함)</p>
+                        <i class="fa-solid fa-plane text-orange-400 text-2xl mb-2"></i>
+                        <h4 class="font-bold text-slate-700">항공 일정</h4>
+                        <p class="text-xs text-slate-500">출국: 12/2 10:10</p>
+                        <p class="text-xs text-slate-500">귀국: 12/9 13:40</p>
                     </div>
                     <div class="bg-emerald-50 p-4 rounded-xl text-center col-span-2">
-                        <i class="fa-solid fa-heart text-emerald-500 text-2xl mb-2"></i>
-                        <h4 class="font-bold text-slate-700">컨셉</h4>
-                        <div class="flex justify-between text-xs mt-2 px-4">
-                            <span>휴양 (북부/중부)</span>
-                            <span>도시 (남부)</span>
-                        </div>
-                        <div class="w-full bg-emerald-200 rounded-full h-2.5 mt-1">
-                            <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 70%"></div>
+                        <i class="fa-solid fa-temperature-half text-emerald-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold text-slate-700">12월 첫주 날씨 예보</h4>
+                        <div class="flex justify-between items-center mt-2 px-2 text-sm text-slate-600">
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-cloud-sun"></i><span>화</span><span class="text-xs">25°</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-cloud"></i><span>수</span><span class="text-xs">23°</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-sun text-orange-400"></i><span>목</span><span class="text-xs">24°</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-cloud-rain text-blue-400"></i><span>금</span><span class="text-xs">21°</span></div>
+                            <div class="flex flex-col items-center"><i class="fa-solid fa-cloud-sun"></i><span>토</span><span class="text-xs">22°</span></div>
                         </div>
                     </div>
                 </div>
@@ -115,42 +118,113 @@
         <section id="itinerary" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-800 mb-2">일별 상세 일정</h2>
-                <p class="text-slate-600">탭을 클릭하여 날짜별 동선을 확인하세요.</p>
+                <p class="text-slate-600">탭을 클릭하면 날짜별 날씨, 동선, 맵코드를 확인할 수 있습니다.</p>
             </div>
             <div class="flex overflow-x-auto space-x-2 pb-4 scrollbar-hide mb-6" id="date-tabs"></div>
             <div id="day-content" class="min-h-[400px]"></div>
         </section>
 
-        <!-- Section 3: Food -->
+        <!-- Section 3: Food (Updated with My Pick Tab) -->
         <section id="food" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">맛집 & 카페</h2>
-                <p class="text-slate-600">카드를 클릭하면 맵코드가 복사됩니다.</p>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">맛집 대시보드</h2>
+                <p class="text-slate-600">직접 찾은 맛집(My Pick)과 현지인 추천 맛집을 나눠서 보세요.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-emerald-600 border-b-2 border-emerald-100 pb-2"><i class="fa-solid fa-tree mr-2"></i>북부</h3>
-                    <div id="food-north-list" class="space-y-3"></div>
+
+            <!-- Sub Tabs for Food -->
+            <div class="flex space-x-4 mb-6 border-b border-slate-200 pb-2">
+                <button onclick="switchFoodTab('mypick')" id="tab-mypick" class="text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors">❤️ 내가 찾은 맛집</button>
+                <button onclick="switchFoodTab('local')" id="tab-local" class="text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors">👍 현지인 추천 (로컬)</button>
+            </div>
+
+            <!-- Content Area -->
+            <div id="food-content-area">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Section 4: Survival Japanese (New Feature) -->
+        <section id="japanese" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">🗣️ 생존 일본어 회화</h2>
+                    <p class="text-slate-600">클릭하면 복사됩니다. AI에게 발음을 물어보세요!</p>
                 </div>
-                <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-sky-600 border-b-2 border-sky-100 pb-2"><i class="fa-solid fa-water mr-2"></i>중부</h3>
-                    <div id="food-central-list" class="space-y-3"></div>
+                <i class="fa-solid fa-language text-4xl text-indigo-100"></i>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Restaurant -->
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
+                    <h3 class="font-bold text-orange-600 mb-3"><i class="fa-solid fa-utensils mr-2"></i>식당에서</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('고레 쿠다사이')">
+                            <span>이거 주세요</span>
+                            <span class="text-xs text-slate-400">고레 쿠다사이</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('미즈 오네가이시마스')">
+                            <span>물 좀 주세요</span>
+                            <span class="text-xs text-slate-400">미즈 오네가이시마스</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오카이케 오네가이시마스')">
+                            <span>계산해 주세요</span>
+                            <span class="text-xs text-slate-400">오카이케 오네가이시마스</span>
+                        </div>
+                         <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오스스메와 난데스까?')">
+                            <span>추천 메뉴는?</span>
+                            <span class="text-xs text-slate-400">오스스메와 난데스까?</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="space-y-4">
-                    <h3 class="font-bold text-lg text-indigo-600 border-b-2 border-indigo-100 pb-2"><i class="fa-solid fa-city mr-2"></i>남부</h3>
-                    <div id="food-south-list" class="space-y-3"></div>
+
+                <!-- Shopping -->
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h3 class="font-bold text-sky-600 mb-3"><i class="fa-solid fa-shopping-bag mr-2"></i>쇼핑할 때</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('이쿠라 데스까?')">
+                            <span>얼마예요?</span>
+                            <span class="text-xs text-slate-400">이쿠라 데스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('멘제- 데키마스까?')">
+                            <span>면세 되나요?</span>
+                            <span class="text-xs text-slate-400">멘제- 데키마스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('카-도 츠카에마스까?')">
+                            <span>카드 되나요?</span>
+                            <span class="text-xs text-slate-400">카-도 츠카에마스까?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency -->
+                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                    <h3 class="font-bold text-red-600 mb-3"><i class="fa-solid fa-kit-medical mr-2"></i>비상시</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('토이레와 도코데스까?')">
+                            <span>화장실 어디에요?</span>
+                            <span class="text-xs text-slate-400">토이레와 도코데스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('스미마셍')">
+                            <span>저기요 / 죄송해요</span>
+                            <span class="text-xs text-slate-400">스미마셍</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('아리가또 고자이마스')">
+                            <span>감사합니다</span>
+                            <span class="text-xs text-slate-400">아리가또 고자이마스</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 4: Map Code Search -->
+        <!-- Section 5: Map Code Search -->
         <section class="bg-slate-800 text-white rounded-2xl shadow-lg p-8 mb-8">
             <h2 class="text-xl font-bold mb-4"><i class="fa-solid fa-magnifying-glass mr-2"></i>맵코드 검색</h2>
-            <input type="text" id="mapcode-search" placeholder="장소명 (예: 츄라우미)" class="w-full p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <input type="text" id="mapcode-search" placeholder="장소명 (예: 부세나, 츄라우미)" class="w-full p-3 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
             <div id="search-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div>
         </section>
         
-        <!-- Settings Button (For Resetting API Key) -->
+        <!-- Settings Button -->
         <div class="text-center pb-8">
              <button onclick="resetApiKey()" class="text-xs text-slate-400 underline hover:text-slate-600">AI 키 재설정하기</button>
         </div>
@@ -175,13 +249,13 @@
             <div class="flex items-start gap-2">
                 <div class="bg-violet-100 p-2 rounded-full"><i class="fa-solid fa-robot text-violet-600"></i></div>
                 <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 max-w-[85%] text-slate-700">
-                    안녕하세요! 무엇을 도와드릴까요?<br>맛집 추천, 일본어 번역 등을 물어보세요!
+                    안녕하세요! 무엇을 도와드릴까요?<br>일본어 회화 발음이 궁금하거나, 현재 위치 근처 맛집이 필요하면 언제든 물어보세요!
                 </div>
             </div>
         </div>
         <div class="px-4 py-2 bg-white border-t border-slate-100 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
-            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">✨ 맛집 추천</button>
-            <button onclick="sendQuickPrompt('translate')" class="px-3 py-1 bg-fuchsia-50 text-fuchsia-600 text-xs rounded-full border border-fuchsia-100 hover:bg-fuchsia-100">🗣️ 일본어 번역</button>
+            <button onclick="sendQuickPrompt('pronounce')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">🗣️ 이거 발음해줘</button>
+            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-sky-50 text-sky-600 text-xs rounded-full border border-sky-100 hover:bg-sky-100">✨ 지금 갈만한 곳</button>
         </div>
         <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
             <input type="text" id="ai-input" placeholder="메시지 입력..." class="flex-grow bg-slate-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-violet-300 outline-none" onkeypress="handleEnter(event)">
@@ -190,69 +264,77 @@
     </div>
 
     <script>
-        // --- DATA ---
+        // --- ITINERARY DATA ---
         const itinerary = [
-            { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 북부 이동", stay: "북부 리조트", schedule: [
-                { time: "12:00", activity: "나하 공항 도착", note: "입국 수속" },
-                { time: "13:30", activity: "렌터카 픽업", note: "마리오 렌터카", mapCode: "33 095 244*60" },
-                { time: "14:30", activity: "북부 이동 (고속도로)", note: "쿄다 IC 하차" },
-                { time: "18:30", activity: "저녁 식사", note: "우후야 or 캡틴 캥거루" }
-            ]},
-            { date: "12/3 (수)", day: 2, title: "츄라우미 & 비세후쿠길", stay: "북부 리조트", schedule: [
-                { time: "10:00", activity: "츄라우미 수족관", note: "오키짱 쇼 관람", mapCode: "553 075 797*77" },
-                { time: "13:00", activity: "점심: 삿짱소바", note: "현지인 맛집", mapCode: "553 046 397*55" },
-                { time: "14:30", activity: "비세후쿠길 산책", note: "자전거 렌트 추천", mapCode: "553 105 654*77" }
-            ]},
-            { date: "12/4 (목)", day: 3, title: "코우리 & 맥주 공장", stay: "북부 리조트", schedule: [
-                { time: "10:30", activity: "코우리 대교", note: "쉬림프 웨건", mapCode: "485 662 041*33" },
-                { time: "14:00", activity: "오리온 해피파크", note: "예약 필수 / 운전자 논알콜", mapCode: "206 598 867*44" },
-                { time: "18:30", activity: "저녁: 이자카야", note: "야가지섬 근처 등" }
-            ]},
-            { date: "12/5 (금)", day: 4, title: "만자모 & 중부 이동", stay: "중부 호텔", schedule: [
-                { time: "11:30", activity: "만자모", note: "코끼리 바위", mapCode: "206 312 039*17" },
-                { time: "13:00", activity: "점심: 나카무라 소바", note: "또는 팬케이크" },
-                { time: "17:30", activity: "아메리칸 빌리지", note: "야경 및 쇼핑", mapCode: "33 526 450*63" }
-            ]},
-            { date: "12/6 (토)", day: 5, title: "푸른동굴 & 카페", stay: "중부 호텔", schedule: [
-                { time: "09:00", activity: "푸른동굴 스노클링", note: "마에다 곶", mapCode: "206 062 685*85" },
-                { time: "12:30", activity: "점심: 산스시", note: "교토식 가정식", mapCode: "33 466 690*71" },
-                { time: "14:30", activity: "반타 카페", note: "호시노 리조트 뷰", mapCode: "33 882 485*82" },
-                { time: "16:30", activity: "해중도로 드라이브", note: "여유로운 드라이브", mapCode: "499 576 274*33" }
-            ]},
-            { date: "12/7 (일)", day: 6, title: "미나토가와 & 나하", stay: "남부 호텔", schedule: [
-                { time: "11:30", activity: "미나토가와 타운", note: "오하코르테 타르트", mapCode: "33 341 033*55" },
-                { time: "15:00", activity: "나하 체크인", note: "국제거리 인근" },
-                { time: "19:00", activity: "저녁: 야키니쿠 플심", note: "천엔 술 무제한", mapCode: "33 157 532*71" }
-            ]},
-            { date: "12/8 (월)", day: 7, title: "남부 관광", stay: "남부 호텔", schedule: [
-                { time: "10:00", activity: "슈리성", note: "류큐 왕국", mapCode: "33 161 526*55" },
-                { time: "12:30", activity: "점심: 마제멘 마호로바", note: "비빔라멘", mapCode: "33 157 266*82" },
-                { time: "14:30", activity: "우미카지 테라스", note: "공항 근처 뷰맛집", mapCode: "33 002 602*06" }
-            ]},
-            { date: "12/9 (화)", day: 8, title: "귀국", stay: "집으로", schedule: [
-                { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카" },
-                { time: "11:00", activity: "나하 공항", note: "면세점 및 식사" },
-                { time: "13:00", activity: "출국", note: "Happy Honeymoon!" }
-            ]}
+            { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 부세나", stay: "더 부세나 테라스", weather: { icon: "fa-cloud-sun", temp: "25°", desc: "구름 많음" }, schedule: [ { time: "10:10", activity: "인천 출발", note: "설레는 신혼여행 시작!" }, { time: "12:35", activity: "나하 공항 도착", note: "짐 찾기 및 셔틀 이동" }, { time: "14:00", activity: "렌터카 픽업", note: "마리오 렌터카", mapCode: "33 095 244*60" }, { time: "16:30", activity: "더 부세나 테라스 체크인", note: "웰컴 드링크 & 선셋 산책", mapCode: "206 412 057*05" }, { time: "18:30", activity: "저녁: 츄라하나", note: "호텔 근처 로컬 가정식 (평점 4.2+)", mapCode: "206 381 228*44" } ] },
+            { date: "12/3 (수)", day: 2, title: "북부 힐링 & 해중 전망대", stay: "더 부세나 테라스", weather: { icon: "fa-cloud", temp: "23°", desc: "흐림" }, schedule: [ { time: "10:00", activity: "부세나 해중 전망대", note: "호텔 내 시설", mapCode: "206 442 075*11" }, { time: "12:30", activity: "점심: 캡틴 캥거루", note: "인생 햄버거 맛집 (대기 주의)", mapCode: "206 444 013*00" }, { time: "14:30", activity: "비세후쿠길 & 츄라우미", note: "북부 필수 코스", mapCode: "553 075 797*77" }, { time: "19:00", activity: "저녁: 콜롬빈 (스테이크)", note: "나고 시내 레트로 스테이크", mapCode: "206 598 376*63" } ] },
+            { date: "12/4 (목)", day: 3, title: "중부 이동 & 아메빌", stay: "더블트리 차탄", weather: { icon: "fa-sun", temp: "24°", desc: "맑음" }, schedule: [ { time: "11:00", activity: "체크아웃 & 남하", note: "해안도로 드라이브" }, { time: "12:30", activity: "점심: 나카무라 소바", note: "만자모 근처 아사소바", mapCode: "206 313 455*06" }, { time: "15:00", activity: "더블트리 차탄 체크인", note: "아메리칸 빌리지 바로 옆", mapCode: "33 525 593*33" }, { time: "17:30", activity: "아메리칸 빌리지 야경", note: "크리스마스 분위기 즐기기", mapCode: "33 526 450*63" }, { time: "19:00", activity: "저녁: 스테이크 하우스 88", note: "오키나와 클래식 스테이크", mapCode: "33 525 808*11" } ] },
+            { date: "12/5 (금)", day: 4, title: "푸른동굴 & 카페 투어", stay: "더블트리 차탄", weather: { icon: "fa-cloud-rain", temp: "21°", desc: "한때 비" }, schedule: [ { time: "10:00", activity: "푸른동굴 스노클링", note: "마에다 곶", mapCode: "206 062 685*85" }, { time: "13:00", activity: "점심: 지로쵸 스시", note: "예약 권장, 현지인 맛집", mapCode: "33 555 770*14" }, { time: "15:00", activity: "반타 카페", note: "비가 와도 좋은 오션뷰", mapCode: "33 882 485*82" }, { time: "18:00", activity: "호텔 휴식 & 수영장", note: "더블트리 부대시설 즐기기" } ] },
+            { date: "12/6 (토)", day: 5, title: "이온몰 & 쇼핑 데이", stay: "더블트리 차탄", weather: { icon: "fa-cloud-sun", temp: "22°", desc: "구름 조금" }, schedule: [ { time: "11:00", activity: "이온몰 라이카무", note: "초대형 쇼핑몰", mapCode: "33 530 406*45" }, { time: "14:00", activity: "점심: 쿠라스시", note: "쇼핑몰 내 회전초밥", mapCode: "33 530 268*06" }, { time: "16:30", activity: "미나토가와 산책", note: "외국인 주택거리 (오하코르테)", mapCode: "33 341 033*55" }, { time: "19:00", activity: "저녁: 블루실 & 타코라이스", note: "아메빌에서 가볍게 야식" } ] },
+            { date: "12/7 (일)", day: 6, title: "남부 이동 & 럭셔리 호캉스", stay: "류큐 호텔 나시로", weather: { icon: "fa-sun", temp: "23°", desc: "맑음" }, schedule: [ { time: "11:00", activity: "체크아웃 & 이동", note: "이토만 방향 (남부)" }, { time: "12:30", activity: "우미카지 테라스", note: "공항 뷰 카페", mapCode: "33 002 602*06" }, { time: "15:00", activity: "류큐 호텔 나시로 체크인", note: "신상 럭셔리 리조트 즐기기", mapCode: "232 365 258*14" }, { time: "18:30", activity: "저녁: 이토만 어민 식당", note: "★버터 생선구이 필수(대기 있음)", mapCode: "232 484 666*41" } ] },
+            { date: "12/8 (월)", day: 7, title: "남부 투어 & 마지막 밤", stay: "류큐 호텔 나시로", weather: { icon: "fa-cloud-sun", temp: "24°", desc: "맑음" }, schedule: [ { time: "10:30", activity: "치넨 미사키 공원", note: "탁 트인 태평양 뷰", mapCode: "232 594 503*33" }, { time: "12:00", activity: "점심: 찻집 마카베 차이나", note: "고택에서 먹는 소바", mapCode: "232 396 033*22" }, { time: "15:00", activity: "호텔 수영장 & 비치", note: "마지막 호캉스 누리기" }, { time: "19:00", activity: "저녁: 야키니쿠 콩고", note: "이토만 시내 와규 맛집", mapCode: "232 485 186*55" } ] },
+            { date: "12/9 (화)", day: 8, title: "귀국", stay: "집으로", weather: { icon: "fa-plane", temp: "23°", desc: "귀국" }, schedule: [ { time: "09:00", activity: "체크아웃", note: "여권, 지갑 확인!" }, { time: "10:00", activity: "렌터카 반납", note: "마리오 렌터카", mapCode: "33 095 244*60" }, { time: "11:00", activity: "나하 공항 수속", note: "면세점 (로이즈, 베니이모)" }, { time: "13:40", activity: "인천행 출발", note: "행복한 신혼여행 마무리 ❤️" } ] }
         ];
 
-        const foodPlaces = {
-            north: [{name:"삿짱소바",desc:"현지 맛집",map:"553 046 397*55"}, {name:"쉬림프 웨건",desc:"코우리대교 갈릭새우",map:"485 692 129*71"}, {name:"우후야",desc:"백년고가 아구돼지",map:"206 745 056*82"}],
-            central: [{name:"오하코르테",desc:"미나토가와 타르트",map:"33 341 002*28"}, {name:"이시구후",desc:"닭육수 소바",map:"33 341 123*22"}, {name:"반타 카페",desc:"압도적 오션뷰",map:"33 882 485*82"}],
-            south: [{name:"야끼니꾸 플심",desc:"술 무제한 야키니쿠",map:"33 157 532*71"}, {name:"마제멘 마호로바",desc:"비빔라멘",map:"33 157 266*82"}, {name:"야타이무라",desc:"포장마차 거리",map:"33 157 406*41"}]
+        // --- FOOD DATA (Separated) ---
+        const foodData = {
+            mypick: [
+                { region: "북부", name: "삿짱소바 (Satchan Soba)", desc: "츄라우미 가는 길 현지 맛집, 세트 1000엔대", map: "206 627 726*62" },
+                { region: "중부", name: "미나토가와 오하코르테", desc: "과일 타르트 전문점, 감성 인테리어", map: "33 341 002*28" },
+                { region: "중부", name: "세라도 커피", desc: "직접 로스팅한 원두, 미나토가와", map: "33 341 062*77" },
+                { region: "중부", name: "이시구후 소바", desc: "오키나와 초대 소바 왕좌, 닭육수", map: "33 341 123*22" },
+                { region: "중부", name: "플라우만스 런치 베이커리", desc: "언덕 위 빵과 브런치, 뷰 맛집", map: "33 440 259*55" },
+                { region: "중부", name: "산스시 (Sansushi)", desc: "정갈한 교토식 일식 요리", map: "33 466 690*71" },
+                { region: "중부", name: "반타 카페", desc: "호시노 리조트 운영, 압도적 오션뷰", map: "33 882 485*82" },
+                { region: "남부", name: "야끼니꾸 플심", desc: "국제거리, 1000엔 술 무제한 야키니쿠", map: "33 157 532*71" },
+                { region: "남부", name: "마제멘 마호로바", desc: "중독성 있는 비빔라멘", map: "33 157 266*82" }
+            ],
+            local: [
+                { region: "북부", name: "츄라하나 (Chura-Hana)", desc: "부세나 근처 1등 가정식, 흑돼지 돈까스", map: "206 381 228*44" },
+                { region: "북부", name: "콜롬빈 (Colombin)", desc: "현지인이 사랑하는 레트로 스테이크", map: "206 598 376*63" },
+                { region: "중부", name: "지로쵸 스시", desc: "더블트리 근처 1티어, 예약 권장", map: "33 555 770*14" },
+                { region: "중부", name: "스테이크 하우스 88", desc: "미군 기지 근처 정통 스테이크", map: "33 525 808*11" },
+                { region: "남부", name: "이토만 어민 식당", desc: "류큐 호텔 근처 원탑, 버터야키 필수", map: "232 484 666*41" },
+                { region: "남부", name: "찻집 마카베 차이나", desc: "문화재 고택에서 먹는 소바", map: "232 396 033*22" }
+            ]
         };
 
         const searchCodes = [
+            {name:"더 부세나 테라스",code:"206 412 057*05"}, {name:"더블트리 차탄",code:"33 525 593*33"}, {name:"류큐 호텔 나시로",code:"232 365 258*14"},
             {name:"츄라우미 수족관",code:"553 075 797*77"}, {name:"코우리 대교",code:"485 662 041*33"}, {name:"만자모",code:"206 312 039*17"},
-            {name:"아메리칸 빌리지",code:"33 526 450*63"}, {name:"푸른동굴",code:"206 062 685*85"}, {name:"미나토가와",code:"33 341 033*55"},
-            {name:"슈리성",code:"33 161 526*55"}, {name:"우미카지 테라스",code:"33 002 602*06"}, {name:"국제거리",code:"33 157 435*41"}
+            {name:"아메리칸 빌리지",code:"33 526 450*63"}, {name:"푸른동굴",code:"206 062 685*85"}, {name:"이토만 어민식당",code:"232 484 666*41"},
+            {name:"나하 공항",code:"33 123 279*00"}, {name:"마리오 렌터카",code:"33 095 244*60"}
         ];
+
+        // --- CLIPBOARD HELPER ---
+        function copyToClipboard(text) {
+            const cleanText = text.split('(')[0].trim();
+            const textArea = document.createElement("textarea");
+            textArea.value = cleanText;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                // Toast Notification
+                const toast = document.createElement('div');
+                toast.className = "fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-sm z-50 animate-slide-up shadow-lg";
+                toast.innerHTML = `<i class="fa-solid fa-check mr-2 text-green-400"></i>복사완료: ${cleanText}`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            } catch (err) {
+                prompt("직접 복사해주세요:", cleanText);
+            }
+            document.body.removeChild(textArea);
+        }
 
         // --- RENDER LOGIC ---
         function initApp() {
             renderChart();
             renderTabs();
-            renderFood();
+            switchFoodTab('mypick'); // Default tab
             initSearch();
         }
 
@@ -261,8 +343,8 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['북부', '중부', '남부'],
-                    datasets: [{ data: [3, 2, 2], backgroundColor: ['#10B981', '#0EA5E9', '#6366F1'], borderWidth: 0 }]
+                    labels: ['부세나 (북부)', '더블트리 (중부)', '류큐호텔 (남부)'],
+                    datasets: [{ data: [2, 3, 2], backgroundColor: ['#10B981', '#0EA5E9', '#6366F1'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } }
             });
@@ -272,8 +354,8 @@
             const container = document.getElementById('date-tabs');
             itinerary.forEach((day, idx) => {
                 const btn = document.createElement('button');
-                btn.className = `flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${idx === 0 ? 'active-tab' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}`;
-                btn.innerText = day.date;
+                btn.className = `flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors flex items-center gap-2 ${idx === 0 ? 'active-tab' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}`;
+                btn.innerHTML = `<span>${day.date}</span> <i class="fa-solid ${day.weather.icon} text-xs"></i>`;
                 btn.onclick = () => switchTab(idx);
                 container.appendChild(btn);
             });
@@ -282,23 +364,32 @@
 
         function switchTab(idx) {
             const tabs = document.getElementById('date-tabs').children;
-            for(let i=0; i<tabs.length; i++) tabs[i].className = i===idx ? 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors active-tab' : 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors bg-white text-slate-500 border-slate-200 hover:bg-slate-50';
+            for(let i=0; i<tabs.length; i++) tabs[i].className = i===idx ? 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors active-tab flex items-center gap-2' : 'flex-shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition-colors bg-white text-slate-500 border-slate-200 hover:bg-slate-50 flex items-center gap-2';
             
             const data = itinerary[idx];
             document.getElementById('current-day-display').innerText = data.day;
+            document.getElementById('current-weather-icon').innerHTML = `<i class="fa-solid ${data.weather.icon}"></i> ${data.weather.desc}`;
             
-            let html = `<div class="bg-white rounded-xl p-4 mb-4 border-l-4 ${idx < 3 ? 'border-emerald-500' : (idx < 5 ? 'border-sky-500' : 'border-indigo-500')} shadow-sm">
-                        <h3 class="text-xl font-bold text-slate-800">${data.title}</h3>
-                        <p class="text-sm text-slate-500 mt-1"><i class="fa-solid fa-bed mr-2"></i>${data.stay}</p>
+            let html = `<div class="bg-white rounded-xl p-4 mb-4 border-l-4 ${idx < 2 ? 'border-emerald-500' : (idx < 5 ? 'border-sky-500' : 'border-indigo-500')} shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800">${data.title}</h3>
+                                <p class="text-sm text-slate-500 mt-1"><i class="fa-solid fa-bed mr-2"></i>${data.stay}</p>
+                            </div>
+                            <div class="text-right bg-slate-100 p-2 rounded-lg">
+                                <div class="text-2xl font-bold text-slate-700">${data.weather.temp}</div>
+                                <div class="text-xs text-slate-500"><i class="fa-solid ${data.weather.icon}"></i> ${data.weather.desc}</div>
+                            </div>
+                        </div>
                         </div><div class="relative mt-6"><div class="timeline-line"></div>`;
             
             data.schedule.forEach(item => {
                 html += `<div class="relative pl-8 pb-8 group">
-                        <div class="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm z-10 ${idx < 3 ? 'bg-emerald-500' : (idx < 5 ? 'bg-sky-500' : 'bg-indigo-500')}"></div>
+                        <div class="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm z-10 ${idx < 2 ? 'bg-emerald-500' : (idx < 5 ? 'bg-sky-500' : 'bg-indigo-500')}"></div>
                         <div class="bg-slate-50 rounded-xl p-4 card-hover border border-slate-100">
                             <div class="flex justify-between items-start mb-1">
                                 <span class="font-bold text-slate-800 text-lg">${item.time}</span>
-                                ${item.mapCode ? `<span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded cursor-pointer hover:bg-slate-300" onclick="navigator.clipboard.writeText('${item.mapCode.split('(')[0].trim()}')"><i class="fa-solid fa-copy mr-1"></i>${item.mapCode}</span>` : ''}
+                                ${item.mapCode ? `<span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded cursor-pointer hover:bg-slate-300" onclick="copyToClipboard('${item.mapCode}')"><i class="fa-solid fa-copy mr-1"></i>${item.mapCode}</span>` : ''}
                             </div>
                             <h4 class="font-bold text-base text-slate-700 mb-1">${item.activity}</h4>
                             <p class="text-sm text-slate-500">${item.note}</p>
@@ -307,14 +398,43 @@
             document.getElementById('day-content').innerHTML = html + '</div>';
         }
 
-        function renderFood() {
-            const makeCard = (item) => `<div class="bg-slate-50 p-3 rounded-lg border border-slate-100 card-hover cursor-pointer" onclick="navigator.clipboard.writeText('${item.map.split('*')[0]}')">
-                <div class="flex justify-between items-center"><h4 class="font-bold text-slate-700">${item.name}</h4><i class="fa-solid fa-location-dot text-slate-400 text-xs"></i></div>
-                <p class="text-xs text-slate-500 mt-1">${item.desc}</p><div class="mt-2 text-xs font-mono text-slate-400 bg-white p-1 rounded inline-block border border-slate-200">Map: ${item.map}</div></div>`;
+        // --- FOOD TAB LOGIC ---
+        function switchFoodTab(tabType) {
+            const btnMy = document.getElementById('tab-mypick');
+            const btnLocal = document.getElementById('tab-local');
+            const content = document.getElementById('food-content-area');
+
+            if (tabType === 'mypick') {
+                btnMy.className = "text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors";
+                btnLocal.className = "text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors";
+                renderFoodGrid(foodData.mypick);
+            } else {
+                btnMy.className = "text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors";
+                btnLocal.className = "text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors";
+                renderFoodGrid(foodData.local);
+            }
+        }
+
+        function renderFoodGrid(items) {
+            const container = document.getElementById('food-content-area');
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">';
             
-            document.getElementById('food-north-list').innerHTML = foodPlaces.north.map(makeCard).join('');
-            document.getElementById('food-central-list').innerHTML = foodPlaces.central.map(makeCard).join('');
-            document.getElementById('food-south-list').innerHTML = foodPlaces.south.map(makeCard).join('');
+            items.forEach(item => {
+                let badgeColor = item.region === '북부' ? 'bg-emerald-100 text-emerald-800' : (item.region === '중부' ? 'bg-sky-100 text-sky-800' : 'bg-indigo-100 text-indigo-800');
+                
+                html += `<div class="bg-slate-50 p-4 rounded-xl border border-slate-100 card-hover cursor-pointer relative" onclick="copyToClipboard('${item.map}')">
+                    <span class="absolute top-3 right-3 text-xs font-bold px-2 py-1 rounded-full ${badgeColor}">${item.region}</span>
+                    <h4 class="font-bold text-slate-700 pr-12">${item.name}</h4>
+                    <p class="text-xs text-slate-500 mt-2 min-h-[40px]">${item.desc}</p>
+                    <div class="mt-3 text-xs font-mono text-slate-400 bg-white p-2 rounded border border-slate-200 flex justify-between items-center">
+                        <span>Map: ${item.map}</span>
+                        <i class="fa-solid fa-copy"></i>
+                    </div>
+                </div>`;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
         }
 
         function initSearch() {
@@ -323,7 +443,7 @@
                 const res = document.getElementById('search-results');
                 if(!val) { res.innerHTML = ''; return; }
                 const hits = searchCodes.filter(i => i.name.toLowerCase().includes(val));
-                res.innerHTML = hits.length ? hits.map(i => `<div class="bg-slate-700 p-3 rounded flex justify-between items-center hover:bg-slate-600 transition cursor-pointer" onclick="navigator.clipboard.writeText('${i.code.split('*')[0]}')"><span>${i.name}</span><span class="font-mono text-sky-300 text-xs">${i.code} <i class="fa-solid fa-copy ml-1"></i></span></div>`).join('') : '<p class="text-slate-400 col-span-2 text-center">결과 없음</p>';
+                res.innerHTML = hits.length ? hits.map(i => `<div class="bg-slate-700 p-3 rounded flex justify-between items-center hover:bg-slate-600 transition cursor-pointer" onclick="copyToClipboard('${i.code}')"><span>${i.name}</span><span class="font-mono text-sky-300 text-xs">${i.code} <i class="fa-solid fa-copy ml-1"></i></span></div>`).join('') : '<p class="text-slate-400 col-span-2 text-center">결과 없음</p>';
             });
         }
 
@@ -365,8 +485,8 @@
 
         function sendQuickPrompt(type) {
             const prompts = {
-                recommend: "오키나와 여행 중인데, 로맨틱한 분위기의 맛집이나 숨겨진 명소 하나만 추천해줘. 너무 길지 않게 핵심만.",
-                translate: "일본 식당이나 호텔에서 자주 쓰는 유용한 일본어 문장 3개만 알려줘 (발음 포함)."
+                pronounce: "방금 본 일본어 문장 중에서 '이거 주세요'랑 '계산해주세요' 일본어로 어떻게 말하는지 한글 발음이랑 뜻 정확히 알려줘.",
+                recommend: "지금 내 일정(부세나-더블트리-류큐호텔) 근처에서 가볍게 갈만한 카페나 편의점 꿀조합 간식 추천해줘."
             };
             const input = document.getElementById('ai-input');
             input.value = prompts[type] || "";
