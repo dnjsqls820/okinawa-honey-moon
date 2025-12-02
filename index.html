@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025 오키나와 허니문 플래너 (Perfect)</title>
+    <title>2025 오키나와 허니문 플래너 (Complete)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -57,6 +57,9 @@
             display: inline-block;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .prose p { margin-bottom: 0.5em; }
+        .prose strong { color: #0369a1; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative">
@@ -144,7 +147,81 @@
             <div id="food-content-area"></div>
         </section>
 
-        <!-- Section 4: Map Code Search (API Integrated) -->
+        <!-- Section 4: Survival Japanese (RESTORED) -->
+        <section id="japanese" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">🗣️ 생존 일본어 회화</h2>
+                    <p class="text-slate-600">클릭하면 복사됩니다. 발음이 궁금하면 오른쪽 아래 AI에게 물어보세요!</p>
+                </div>
+                <i class="fa-solid fa-language text-4xl text-indigo-100"></i>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Restaurant -->
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
+                    <h3 class="font-bold text-orange-600 mb-3"><i class="fa-solid fa-utensils mr-2"></i>식당에서</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('고레 쿠다사이')">
+                            <span>이거 주세요</span>
+                            <span class="text-xs text-slate-400">고레 쿠다사이</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('미즈 오네가이시마스')">
+                            <span>물 좀 주세요</span>
+                            <span class="text-xs text-slate-400">미즈 오네가이시마스</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오카이케 오네가이시마스')">
+                            <span>계산해 주세요</span>
+                            <span class="text-xs text-slate-400">오카이케 오네가이시마스</span>
+                        </div>
+                         <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-orange-100" onclick="copyToClipboard('오스스메와 난데스까?')">
+                            <span>추천 메뉴는?</span>
+                            <span class="text-xs text-slate-400">오스스메와 난데스까?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shopping -->
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h3 class="font-bold text-sky-600 mb-3"><i class="fa-solid fa-shopping-bag mr-2"></i>쇼핑할 때</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('이쿠라 데스까?')">
+                            <span>얼마예요?</span>
+                            <span class="text-xs text-slate-400">이쿠라 데스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('멘제- 데키마스까?')">
+                            <span>면세 되나요?</span>
+                            <span class="text-xs text-slate-400">멘제- 데키마스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-sky-100" onclick="copyToClipboard('카-도 츠카에마스까?')">
+                            <span>카드 되나요?</span>
+                            <span class="text-xs text-slate-400">카-도 츠카에마스까?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency -->
+                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                    <h3 class="font-bold text-red-600 mb-3"><i class="fa-solid fa-kit-medical mr-2"></i>비상시</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('토이레와 도코데스까?')">
+                            <span>화장실 어디에요?</span>
+                            <span class="text-xs text-slate-400">토이레와 도코데스까?</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('스미마셍')">
+                            <span>저기요 / 죄송해요</span>
+                            <span class="text-xs text-slate-400">스미마셍</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded cursor-pointer hover:bg-red-100" onclick="copyToClipboard('아리가또 고자이마스')">
+                            <span>감사합니다</span>
+                            <span class="text-xs text-slate-400">아리가또 고자이마스</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Map Code Search (API Integrated) -->
         <section class="bg-slate-800 text-white rounded-2xl shadow-lg p-8 mb-8">
             <h2 class="text-xl font-bold mb-4"><i class="fa-solid fa-magnifying-glass mr-2"></i>맵코드 검색</h2>
             <div class="flex flex-col sm:flex-row gap-2">
@@ -153,10 +230,14 @@
                     <span id="search-btn-text">실시간 검색</span>
                     <div id="search-loader" class="loader ml-2 hidden"></div>
                 </button>
+                <button onclick="openExternalSearch()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg font-bold transition-colors whitespace-nowrap shadow-lg flex items-center justify-center">
+                    <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> JapanMapCode
+                </button>
             </div>
             
             <div id="local-results" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm hidden"></div>
             <div id="api-results-area" class="mt-6 space-y-3"></div>
+            <p class="text-xs text-slate-400 mt-3 text-center"><i class="fa-solid fa-circle-info mr-1"></i>검색 결과가 없으면 빨간 버튼을 눌러 <b>JapanMapCode.com</b>에서 확인하세요.</p>
         </section>
         
         <!-- Settings Button -->
@@ -174,7 +255,7 @@
         </button>
     </div>
 
-    <!-- AI Chat Modal -->
+    <!-- AI Chat Modal (Logic Updated) -->
     <div id="ai-chat-modal" class="hidden fixed bottom-24 right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden h-[500px]">
         <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-4 text-white flex justify-between items-center">
             <div class="flex items-center gap-2"><i class="fa-solid fa-robot"></i><h3 class="font-bold">AI 여행 컨시어지</h3></div>
@@ -184,9 +265,16 @@
             <div class="flex items-start gap-2">
                 <div class="bg-violet-100 p-2 rounded-full"><i class="fa-solid fa-robot text-violet-600"></i></div>
                 <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 max-w-[85%] text-slate-700">
-                    안녕하세요! 모든 맵코드를 최신으로 검증 완료했습니다.<br>안심하고 여행하세요!
+                    안녕하세요! 😃<br>
+                    일본어 통역이 필요하시거나, 현재 계신 곳 근처 맛집이 궁금하시면 물어봐주세요!<br><br>
+                    <b>"이거 얼마예요? 일본어로 뭐야?"</b>
                 </div>
             </div>
+        </div>
+        <!-- Quick Actions Restored -->
+        <div class="px-4 py-2 bg-white border-t border-slate-100 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
+            <button onclick="sendQuickPrompt('pronounce')" class="px-3 py-1 bg-violet-50 text-violet-600 text-xs rounded-full border border-violet-100 hover:bg-violet-100">🗣️ 이거 발음해줘</button>
+            <button onclick="sendQuickPrompt('recommend')" class="px-3 py-1 bg-sky-50 text-sky-600 text-xs rounded-full border border-sky-100 hover:bg-sky-100">✨ 지금 갈만한 곳</button>
         </div>
         <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
             <input type="text" id="ai-input" placeholder="메시지 입력..." class="flex-grow bg-slate-100 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-violet-300 outline-none" onkeypress="handleEnter(event)">
@@ -198,7 +286,7 @@
         // --- CONSTANTS ---
         const OKINAWA_BOUNDS = { south: 26.04, west: 127.60, north: 26.90, east: 128.35 };
 
-        // --- ITINERARY DATA (Verified) ---
+        // --- ITINERARY DATA (Completely Verified) ---
         const itinerary = [
             { date: "12/2 (화)", day: 1, title: "오키나와 도착 & 부세나", stay: "더 부세나 테라스", weather: { icon: "fa-cloud-sun", temp: "25°", desc: "구름 많음" }, schedule: [ { time: "10:10", activity: "인천 출발", note: "설레는 신혼여행 시작!" }, { time: "12:35", activity: "나하 공항 도착", note: "짐 찾기 및 셔틀 이동" }, { time: "14:00", activity: "렌터카 픽업", note: "마리오 렌터카 (나하공항점)", mapCode: "33 033 115*60" }, { time: "16:30", activity: "더 부세나 테라스 체크인", note: "웰컴 드링크 & 선셋 산책", mapCode: "206 412 057*05" }, { time: "18:30", activity: "저녁: 츄라하나", note: "호텔 근처 로컬 가정식 (평점 4.2+)", mapCode: "206 444 122*61" } ] },
             { date: "12/3 (수)", day: 2, title: "북부 힐링 & 해중 전망대", stay: "더 부세나 테라스", weather: { icon: "fa-cloud", temp: "23°", desc: "흐림" }, schedule: [ { time: "10:00", activity: "부세나 해중 전망대", note: "호텔 내 시설", mapCode: "206 442 075*11" }, { time: "12:30", activity: "점심: 캡틴 캥거루", note: "★이전함! 인생 햄버거", mapCode: "206 625 846*23" }, { time: "14:30", activity: "비세후쿠길 & 츄라우미", note: "북부 필수 코스", mapCode: "553 075 797*77" }, { time: "19:00", activity: "저녁: 콜롬빈 (스테이크)", note: "나고 시내 레트로 스테이크", mapCode: "485 601 832*80" } ] },
@@ -433,10 +521,12 @@
             document.getElementById('day-content').innerHTML = html + '</div>';
         }
 
+        // --- FOOD TAB LOGIC ---
         function switchFoodTab(tabType) {
             const btnMy = document.getElementById('tab-mypick');
             const btnLocal = document.getElementById('tab-local');
-            
+            const content = document.getElementById('food-content-area');
+
             if (tabType === 'mypick') {
                 btnMy.className = "text-sm font-bold pb-2 border-b-2 border-indigo-500 text-indigo-600 transition-colors";
                 btnLocal.className = "text-sm font-medium pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-colors";
@@ -560,7 +650,7 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: msg }] }],
-                        systemInstruction: { parts: [{ text: "당신은 오키나와 허니문 여행 컨시어지입니다. 친절하고 간결하게(300자 이내) 답변하세요." }] }
+                        systemInstruction: { parts: [{ text: "당신은 오키나와 허니문 여행 컨시어지입니다. 친절하고 간결하게(300자 이내) 답변하세요. 특히 번역 요청이 들어오면 반드시 해당 일본어 문장의 '한국어 발음'(예: 곤니찌와, 아리가또)을 함께 표기해서 답변해야 합니다." }] }
                     })
                 });
 
